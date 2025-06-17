@@ -16,13 +16,13 @@
 /* --- 【新增】响应式图片容器 --- */
 .responsive-img-container {
   position: relative;
-  /* 可根据需要修改这里的宽高比 */
-  /* 56.25% (16:9), 75% (4:3), 100% (1:1), 125% (4:5) */
-  padding-bottom: 56.25%;
+  /* 这里的宽高比决定了容器的形状 */
+  padding-bottom: 56.25%; /* 16:9 宽高比 */
   height: 0;
   overflow: hidden;
-  display: block; /* 确保容器是块级元素 */
-  margin: 1em 0; /* 给图片上下增加一点边距，更美观 */
+  display: block;
+  margin: 1em 0;
+  background-color: #f0f0f0; /* 新增：给容器一个浅灰色背景，用于填充白边 */
 }
 .responsive-img-container img {
   position: absolute;
@@ -30,8 +30,29 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 关键！让图片填满容器而不变形 */
+  /* 核心修改：从 cover 改为 contain */
+  object-fit: contain;
 }
+
+/* 【新增】专门给竖图用的响应式容器 */
+.responsive-img-container-vertical {
+  position: relative;
+  padding-bottom: 133.33%; /* 3:4 宽高比，你可以调整这个值 */
+  height: 0;
+  overflow: hidden;
+  display: block;
+  margin: 1em 0;
+  background-color: #f0f0f0;
+}
+.responsive-img-container-vertical img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* 页脚与头图透明 */
 #footer {
   background: transparent !important;
