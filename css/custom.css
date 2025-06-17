@@ -1,0 +1,125 @@
+/* --- 响应式视频容器 (已存在) --- */
+.responsive-video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 宽高比 */
+  height: 0;
+  overflow: hidden;
+}
+.responsive-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- 【新增】响应式图片容器 --- */
+.responsive-img-container {
+  position: relative;
+  /* 可根据需要修改这里的宽高比 */
+  /* 56.25% (16:9), 75% (4:3), 100% (1:1), 125% (4:5) */
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  display: block; /* 确保容器是块级元素 */
+  margin: 1em 0; /* 给图片上下增加一点边距，更美观 */
+}
+.responsive-img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 关键！让图片填满容器而不变形 */
+}
+/* 页脚与头图透明 */
+#footer {
+  background: transparent !important;
+  /* background: transparent; */
+}
+#page-header {
+  background: transparent !important;
+}
+
+/* 白天模式遮罩透明 */
+[data-theme="light"] #footer{ 
+  /* [data-theme="light"] #footer我的魔改,原来是#footer::before */
+  /* background: transparent !important; */
+  background: transparent !important;
+}
+#page-header::before {
+  background: transparent !important;
+}
+
+/* 夜间模式遮罩透明 */
+[data-theme="dark"] #footer::before {
+  background: transparent !important;
+  /* background: rgba(25, 25, 25, 0.3) !important; */
+}
+[data-theme="dark"] #page-header::before {
+  background: transparent !important;
+}
+  
+  /* 侧边栏个人信息卡片动态渐变色 */
+#aside-content > .card-widget.card-info {
+  background: linear-gradient(
+    -45deg,
+    #e8d8b9,
+    #eccec5,
+    #a3e9eb,
+    #bdbdf0,
+    #eec1ea
+  );
+  box-shadow: 0 0 5px rgb(66, 68, 68);
+  position: relative;
+  background-size: 400% 400%;
+  -webkit-animation: Gradient 10s ease infinite;
+  -moz-animation: Gradient 10s ease infinite;
+  animation: Gradient 10s ease infinite !important;
+}
+
+/* 个人展示栏变色 */
+@-webkit-keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 黑夜模式适配 */
+[data-theme="dark"] #aside-content > .card-widget.card-info {
+  background: #191919ee;
+}
+
+/* 个人信息Follow me按钮 */
+#aside-content > .card-widget.card-info > #card-info-btn {
+  background-color: #3eb8be;
+  border-radius: 8px;
+}
