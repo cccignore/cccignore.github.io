@@ -1,0 +1,121 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="live2dBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fecfef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="configBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f6f8fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e1e4e8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#live2dBg)" rx="8"/>
+  
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Live2D 看板娘配置</text>
+  
+  <!-- Live2D Character Area -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="0" width="200" height="280" fill="rgba(255,255,255,0.9)" stroke="#e1e4e8" stroke-width="2" rx="8"/>
+    <text x="100" y="20" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="14" font-weight="bold">看板娘预览</text>
+    
+    <!-- Character silhouette -->
+    <g transform="translate(100, 150)">
+      <!-- Head -->
+      <ellipse cx="0" cy="-30" rx="25" ry="30" fill="#fbb6ce" opacity="0.8"/>
+      <!-- Hair -->
+      <path d="M-25 -45 Q0 -60 25 -45 Q30 -30 25 -15 Q0 -20 -25 -15 Q-30 -30 -25 -45" fill="#8b5cf6" opacity="0.7"/>
+      <!-- Body -->
+      <ellipse cx="0" cy="20" rx="20" ry="40" fill="#a78bfa" opacity="0.8"/>
+      <!-- Arms -->
+      <ellipse cx="-30" cy="10" rx="8" ry="25" fill="#fbb6ce" opacity="0.8"/>
+      <ellipse cx="30" cy="10" rx="8" ry="25" fill="#fbb6ce" opacity="0.8"/>
+      <!-- Legs -->
+      <ellipse cx="-10" cy="70" rx="6" ry="20" fill="#fbb6ce" opacity="0.8"/>
+      <ellipse cx="10" cy="70" rx="6" ry="20" fill="#fbb6ce" opacity="0.8"/>
+      
+      <!-- Animation -->
+      <animateTransform attributeName="transform" type="translate" values="100,150;100,145;100,150" dur="2s" repeatCount="indefinite"/>
+    </g>
+    
+    <!-- Speech bubble -->
+    <g transform="translate(120, 80)">
+      <ellipse cx="0" cy="0" rx="40" ry="20" fill="white" stroke="#e1e4e8" stroke-width="1"/>
+      <path d="M-20 15 L-15 25 L-10 15" fill="white" stroke="#e1e4e8" stroke-width="1"/>
+      <text x="0" y="5" text-anchor="middle" fill="#4a5568" font-family="Arial, sans-serif" font-size="10">欢迎访问！</text>
+    </g>
+    
+    <!-- Model selector -->
+    <g transform="translate(10, 250)">
+      <rect x="0" y="0" width="180" height="20" fill="#f7fafc" stroke="#e2e8f0" stroke-width="1" rx="4"/>
+      <text x="90" y="14" text-anchor="middle" fill="#4a5568" font-family="Arial, sans-serif" font-size="10">模型: Haru/01</text>
+    </g>
+  </g>
+  
+  <!-- Configuration Panel -->
+  <g transform="translate(280, 60)">
+    <rect x="0" y="0" width="300" height="280" fill="url(#configBg)" stroke="#e1e4e8" stroke-width="2" rx="8"/>
+    <text x="150" y="20" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="14" font-weight="bold">配置参数</text>
+    
+    <!-- Config items -->
+    <g transform="translate(20, 40)">
+      <!-- Enable -->
+      <text x="0" y="15" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">enable:</text>
+      <text x="80" y="15" fill="#22863a" font-family="SF Mono, Monaco, monospace" font-size="11">true</text>
+      
+      <!-- Script -->
+      <text x="0" y="35" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">scriptFrom:</text>
+      <text x="80" y="35" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">local</text>
+      
+      <!-- Plugin -->
+      <text x="0" y="55" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">pluginRootPath:</text>
+      <text x="0" y="70" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="10">live2dw/</text>
+      
+      <!-- Model -->
+      <text x="0" y="90" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">model:</text>
+      <text x="0" y="105" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  use:</text>
+      <text x="50" y="105" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="10">live2d-widget-model-haru</text>
+      
+      <!-- Display -->
+      <text x="0" y="125" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">display:</text>
+      <text x="0" y="140" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  position:</text>
+      <text x="70" y="140" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="10">right</text>
+      <text x="0" y="155" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  width:</text>
+      <text x="50" y="155" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="10">150</text>
+      <text x="0" y="170" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  height:</text>
+      <text x="60" y="170" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="10">300</text>
+      
+      <!-- Mobile -->
+      <text x="0" y="190" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">mobile:</text>
+      <text x="0" y="205" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  show:</text>
+      <text x="50" y="205" fill="#d73a49" font-family="SF Mono, Monaco, monospace" font-size="10">false</text>
+      
+      <!-- React -->
+      <text x="0" y="225" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">react:</text>
+      <text x="0" y="240" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">  opacity:</text>
+      <text x="70" y="240" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="10">0.7</text>
+    </g>
+  </g>
+  
+  <!-- Installation steps -->
+  <g transform="translate(50, 360)">
+    <text x="0" y="0" fill="#2d3748" font-family="Arial, sans-serif" font-size="12" font-weight="bold">安装步骤:</text>
+    <text x="80" y="0" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">npm install hexo-helper-live2d --save</text>
+    <text x="350" y="0" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">npm install live2d-widget-model-haru --save</text>
+  </g>
+  
+  <!-- Features list -->
+  <g transform="translate(480, 100)">
+    <rect x="0" y="0" width="100" height="120" fill="rgba(255,255,255,0.9)" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+    <text x="50" y="15" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="11" font-weight="bold">功能特性</text>
+    
+    <text x="10" y="35" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 多种模型</text>
+    <text x="10" y="50" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 交互动画</text>
+    <text x="10" y="65" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 响应式设计</text>
+    <text x="10" y="80" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 自定义位置</text>
+    <text x="10" y="95" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 移动端适配</text>
+    <text x="10" y="110" fill="#22863a" font-family="Arial, sans-serif" font-size="9">✓ 多语言支持</text>
+  </g>
+</svg>

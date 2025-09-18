@@ -1,0 +1,476 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>博客搭建完整教程 | CYN's Blog</title><meta name="author" content="Yinuo Chen"><meta name="copyright" content="Yinuo Chen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于 Hexo + Butterfly 主题 + GitHub Pages 的完整博客搭建指南，包含详细步骤和图文说明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="博客搭建完整教程">
+<meta property="og:url" content="https://cccignore.github.io/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="CYN&#39;s Blog">
+<meta property="og:description" content="基于 Hexo + Butterfly 主题 + GitHub Pages 的完整博客搭建指南，包含详细步骤和图文说明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cccignore.github.io/img/blog-tutorial/cover.svg">
+<meta property="article:published_time" content="2025-01-27T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-18T15:37:10.722Z">
+<meta property="article:author" content="Yinuo Chen">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Butterfly">
+<meta property="article:tag" content="GitHub Pages">
+<meta property="article:tag" content="Live2D">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cccignore.github.io/img/blog-tutorial/cover.svg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "博客搭建完整教程",
+  "url": "https://cccignore.github.io/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/",
+  "image": "https://cccignore.github.io/img/blog-tutorial/cover.svg",
+  "datePublished": "2025-01-27T04:00:00.000Z",
+  "dateModified": "2025-09-18T15:37:10.722Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Yinuo Chen",
+      "url": "https://cccignore.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://cccignore.github.io/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '博客搭建完整教程',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/fill-left.css"><script src="/live2d-widget/dist/autoload.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/img/my-background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/blog-tutorial/cover.svg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src= "/img/loading.gif" data-lazy-src="/img/logo.png" alt="Logo"><span class="site-name">CYN's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">博客搭建完整教程</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">博客搭建完整教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-27T04:00:00.000Z" title="发表于 2025-01-27 12:00:00">2025-01-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-18T15:37:10.722Z" title="更新于 2025-09-18 23:37:10">2025-09-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="博客搭建完整教程"><a href="#博客搭建完整教程" class="headerlink" title="博客搭建完整教程"></a>博客搭建完整教程</h1><blockquote>
+<p>基于 Hexo + Butterfly 主题 + GitHub Pages 的完整博客搭建指南</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/cover.svg" alt="博客搭建教程封面"></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">环境准备</a></li>
+<li><a href="#2-hexo-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96">Hexo 安装与初始化</a></li>
+<li><a href="#3-butterfly-%E4%B8%BB%E9%A2%98%E5%AE%89%E8%A3%85">Butterfly 主题安装</a></li>
+<li><a href="#4-live2d-%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%85%8D%E7%BD%AE">Live2D 看板娘配置</a></li>
+<li><a href="#5-giscus-%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F">Giscus 评论系统</a></li>
+<li><a href="#6-%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD%E9%85%8D%E7%BD%AE">搜索功能配置</a></li>
+<li><a href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F">自定义样式</a></li>
+<li><a href="#8-%E5%88%9B%E5%BB%BA%E9%A1%B5%E9%9D%A2%E5%92%8C%E6%96%87%E7%AB%A0">创建页面和文章</a></li>
+<li><a href="#9-%E9%83%A8%E7%BD%B2%E5%88%B0-github-pages">部署到 GitHub Pages</a></li>
+<li><a href="#10-%E8%BF%9B%E9%98%B6%E9%85%8D%E7%BD%AE">进阶配置</a></li>
+</ol>
+<h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h2><h3 id="1-1-Node-js-安装"><a href="#1-1-Node-js-安装" class="headerlink" title="1.1 Node.js 安装"></a>1.1 Node.js 安装</h3><p>访问 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js 官网</a> 下载并安装 LTS 版本。</p>
+<p>安装完成后，打开终端验证：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/nodejs-version.svg" alt="Node.js版本验证"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-Git-安装"><a href="#1-2-Git-安装" class="headerlink" title="1.2 Git 安装"></a>1.2 Git 安装</h3><p>访问 <a target="_blank" rel="noopener" href="https://git-scm.com/">Git 官网</a> 下载并安装。</p>
+<p>配置 Git 用户信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;你的用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Hexo-安装与初始化"><a href="#2-Hexo-安装与初始化" class="headerlink" title="2. Hexo 安装与初始化"></a>2. Hexo 安装与初始化</h2><h3 id="2-1-安装-Hexo-CLI"><a href="#2-1-安装-Hexo-CLI" class="headerlink" title="2.1 安装 Hexo CLI"></a>2.1 安装 Hexo CLI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-初始化博客"><a href="#2-2-初始化博客" class="headerlink" title="2.2 初始化博客"></a>2.2 初始化博客</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化 Hexo 博客</span></span><br><span class="line">hexo init myblog</span><br><span class="line"><span class="built_in">cd</span> myblog</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/hexo-init.svg" alt="Hexo初始化过程"></p>
+<p>访问 <code>http://localhost:4000</code> 查看默认博客。</p>
+<h3 id="2-3-博客文件夹结构"><a href="#2-3-博客文件夹结构" class="headerlink" title="2.3 博客文件夹结构"></a>2.3 博客文件夹结构</h3><p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/folder-structure.svg" alt="博客文件夹结构"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">myblog/</span><br><span class="line">├── _config.yml          # 站点配置文件</span><br><span class="line">├── package.json         # 依赖管理</span><br><span class="line">├── scaffolds/           # 文章模板</span><br><span class="line">├── source/              # 源文件目录</span><br><span class="line">│   ├── _drafts/         # 草稿</span><br><span class="line">│   └── _posts/          # 文章</span><br><span class="line">├── themes/              # 主题目录</span><br><span class="line">└── public/              # 生成的静态文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Butterfly-主题安装"><a href="#3-Butterfly-主题安装" class="headerlink" title="3. Butterfly 主题安装"></a>3. Butterfly 主题安装</h2><h3 id="3-1-下载-Butterfly-主题"><a href="#3-1-下载-Butterfly-主题" class="headerlink" title="3.1 下载 Butterfly 主题"></a>3.1 下载 Butterfly 主题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆主题到 themes 目录</span></span><br><span class="line">git <span class="built_in">clone</span> -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装必要的渲染器</span></span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/butterfly-install.svg" alt="Butterfly主题安装"></p>
+<h3 id="3-2-启用主题"><a href="#3-2-启用主题" class="headerlink" title="3.2 启用主题"></a>3.2 启用主题</h3><p>修改根目录下的 <code>_config.yml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">butterfly</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-复制主题配置文件"><a href="#3-3-复制主题配置文件" class="headerlink" title="3.3 复制主题配置文件"></a>3.3 复制主题配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> themes/butterfly/_config.yml _config.butterfly.yml</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-基础配置"><a href="#3-4-基础配置" class="headerlink" title="3.4 基础配置"></a>3.4 基础配置</h3><p>编辑 <code>_config.butterfly.yml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导航菜单</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="string">首页:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="string">归档:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">标签:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="string">分类:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-folder-open</span></span><br><span class="line">  <span class="string">关于:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-heart</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 网站图标</span></span><br><span class="line"><span class="attr">favicon:</span> <span class="string">/img/favicon.ico</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 头像</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">img:</span> <span class="string">/img/avatar.jpg</span></span><br><span class="line">  <span class="attr">effect:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 网站副标题</span></span><br><span class="line"><span class="attr">subtitle:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">sub1:</span> <span class="string">欢迎来到我的博客</span></span><br><span class="line">  <span class="attr">sub2:</span> <span class="string">分享技术与生活</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Live2D-看板娘配置"><a href="#4-Live2D-看板娘配置" class="headerlink" title="4. Live2D 看板娘配置"></a>4. Live2D 看板娘配置</h2><p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/live2d-config.svg" alt="Live2D看板娘配置"></p>
+<h3 id="4-1-安装-Live2D-插件"><a href="#4-1-安装-Live2D-插件" class="headerlink" title="4.1 安装 Live2D 插件"></a>4.1 安装 Live2D 插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-helper-live2d --save</span><br><span class="line">npm install live2d-widget-model-haru --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-配置-Live2D"><a href="#4-2-配置-Live2D" class="headerlink" title="4.2 配置 Live2D"></a>4.2 配置 Live2D</h3><p>在根目录 <code>_config.yml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">live2d:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">scriptFrom:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">pluginRootPath:</span> <span class="string">live2dw/</span></span><br><span class="line">  <span class="attr">pluginJsPath:</span> <span class="string">lib/</span></span><br><span class="line">  <span class="attr">pluginModelPath:</span> <span class="string">assets/</span></span><br><span class="line">  <span class="attr">tagMode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">debug:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">model:</span></span><br><span class="line">    <span class="attr">use:</span> <span class="string">live2d-widget-model-haru</span></span><br><span class="line">  <span class="attr">display:</span></span><br><span class="line">    <span class="attr">position:</span> <span class="string">right</span></span><br><span class="line">    <span class="attr">width:</span> <span class="number">150</span></span><br><span class="line">    <span class="attr">height:</span> <span class="number">300</span></span><br><span class="line">  <span class="attr">mobile:</span></span><br><span class="line">    <span class="attr">show:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">react:</span></span><br><span class="line">    <span class="attr">opacity:</span> <span class="number">0.7</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-可选模型"><a href="#4-3-可选模型" class="headerlink" title="4.3 可选模型"></a>4.3 可选模型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 其他可选模型</span></span><br><span class="line">npm install live2d-widget-model-shizuku --save</span><br><span class="line">npm install live2d-widget-model-miku --save</span><br><span class="line">npm install live2d-widget-model-wanko --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Giscus-评论系统"><a href="#5-Giscus-评论系统" class="headerlink" title="5. Giscus 评论系统"></a>5. Giscus 评论系统</h2><h3 id="5-1-准备工作"><a href="#5-1-准备工作" class="headerlink" title="5.1 准备工作"></a>5.1 准备工作</h3><ol>
+<li>创建 GitHub 公开仓库用于存储评论</li>
+<li>安装 <a target="_blank" rel="noopener" href="https://github.com/apps/giscus">Giscus App</a></li>
+<li>在仓库设置中启用 Discussions 功能</li>
+</ol>
+<h3 id="5-2-获取配置参数"><a href="#5-2-获取配置参数" class="headerlink" title="5.2 获取配置参数"></a>5.2 获取配置参数</h3><p>访问 <a target="_blank" rel="noopener" href="https://giscus.app/zh-CN">Giscus 官网</a> 获取配置参数。</p>
+<h3 id="5-3-配置-Giscus"><a href="#5-3-配置-Giscus" class="headerlink" title="5.3 配置 Giscus"></a>5.3 配置 Giscus</h3><p>在 <code>_config.butterfly.yml</code> 中配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comments:</span></span><br><span class="line">  <span class="attr">use:</span> <span class="string">Giscus</span></span><br><span class="line">  <span class="attr">text:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">lazyload:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">count:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">card_post_count:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">giscus:</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">你的用户名/评论仓库名</span></span><br><span class="line">  <span class="attr">repo_id:</span> <span class="string">你的仓库ID</span></span><br><span class="line">  <span class="attr">category_id:</span> <span class="string">你的分类ID</span></span><br><span class="line">  <span class="attr">theme:</span></span><br><span class="line">    <span class="attr">light:</span> <span class="string">light</span></span><br><span class="line">    <span class="attr">dark:</span> <span class="string">dark</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">data-lang:</span> <span class="string">zh-CN</span></span><br><span class="line">    <span class="attr">data-loading:</span> <span class="string">lazy</span></span><br><span class="line">    <span class="attr">crossorigin:</span> <span class="string">anonymous</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-搜索功能配置"><a href="#6-搜索功能配置" class="headerlink" title="6. 搜索功能配置"></a>6. 搜索功能配置</h2><h3 id="6-1-安装搜索插件"><a href="#6-1-安装搜索插件" class="headerlink" title="6.1 安装搜索插件"></a>6.1 安装搜索插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-search --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-配置搜索"><a href="#6-2-配置搜索" class="headerlink" title="6.2 配置搜索"></a>6.2 配置搜索</h3><p>在根目录 <code>_config.yml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>_config.butterfly.yml</code> 中启用：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">CDN:</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7-自定义样式"><a href="#7-自定义样式" class="headerlink" title="7. 自定义样式"></a>7. 自定义样式</h2><h3 id="7-1-创建自定义-CSS"><a href="#7-1-创建自定义-CSS" class="headerlink" title="7.1 创建自定义 CSS"></a>7.1 创建自定义 CSS</h3><p>创建 <code>source/css/custom.css</code>：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 响应式视频容器 */</span></span><br><span class="line"><span class="selector-class">.video-container</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">padding-bottom</span>: <span class="number">56.25%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.video-container</span> <span class="selector-tag">iframe</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 侧边栏个人信息卡片动态渐变色 */</span></span><br><span class="line"><span class="selector-id">#aside-content</span> <span class="selector-class">.card-widget</span><span class="selector-class">.card-info</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(-<span class="number">45deg</span>, <span class="number">#ee7752</span>, <span class="number">#e73c7e</span>, <span class="number">#23a6d5</span>, <span class="number">#23d5ab</span>);</span><br><span class="line">  <span class="attribute">background-size</span>: <span class="number">400%</span> <span class="number">400%</span>;</span><br><span class="line">  <span class="attribute">animation</span>: gradientBG <span class="number">15s</span> ease infinite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> gradientBG &#123;</span><br><span class="line">  <span class="number">0%</span> &#123; <span class="attribute">background-position</span>: <span class="number">0%</span> <span class="number">50%</span>; &#125;</span><br><span class="line">  <span class="number">50%</span> &#123; <span class="attribute">background-position</span>: <span class="number">100%</span> <span class="number">50%</span>; &#125;</span><br><span class="line">  <span class="number">100%</span> &#123; <span class="attribute">background-position</span>: <span class="number">0%</span> <span class="number">50%</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Follow me 按钮样式 */</span></span><br><span class="line"><span class="selector-class">.button--animated</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(<span class="number">45deg</span>, <span class="number">#667eea</span> <span class="number">0%</span>, <span class="number">#764ba2</span> <span class="number">100%</span>);</span><br><span class="line">  <span class="attribute">border</span>: none;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">25px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">text-decoration</span>: none;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">4px</span> <span class="number">15px</span> <span class="built_in">rgba</span>(<span class="number">102</span>, <span class="number">126</span>, <span class="number">234</span>, <span class="number">0.4</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.button--animated</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">2px</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">8px</span> <span class="number">25px</span> <span class="built_in">rgba</span>(<span class="number">102</span>, <span class="number">126</span>, <span class="number">234</span>, <span class="number">0.6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-引入自定义样式"><a href="#7-2-引入自定义样式" class="headerlink" title="7.2 引入自定义样式"></a>7.2 引入自定义样式</h3><p>在 <code>_config.butterfly.yml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">inject:</span></span><br><span class="line">  <span class="attr">head:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/css/custom.css&quot;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8-创建页面和文章"><a href="#8-创建页面和文章" class="headerlink" title="8. 创建页面和文章"></a>8. 创建页面和文章</h2><h3 id="8-1-创建关于页面"><a href="#8-1-创建关于页面" class="headerlink" title="8.1 创建关于页面"></a>8.1 创建关于页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
+
+<p>编辑 <code>source/about/index.md</code>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 关于我</span><br><span class="line">date: 2024-01-01 00:00:00</span><br><span class="line"><span class="section">type: about</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 关于我</span></span><br><span class="line"></span><br><span class="line">这里是关于页面的内容...</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-创建标签页面"><a href="#8-2-创建标签页面" class="headerlink" title="8.2 创建标签页面"></a>8.2 创建标签页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<p>编辑 <code>source/tags/index.md</code>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: 2024-01-01 00:00:00</span><br><span class="line"><span class="section">type: tags</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-3-创建分类页面"><a href="#8-3-创建分类页面" class="headerlink" title="8.3 创建分类页面"></a>8.3 创建分类页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<p>编辑 <code>source/categories/index.md</code>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line">date: 2024-01-01 00:00:00</span><br><span class="line"><span class="section">type: categories</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-4-创建新文章"><a href="#8-4-创建新文章" class="headerlink" title="8.4 创建新文章"></a>8.4 创建新文章</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;我的第一篇博客&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-部署到-GitHub-Pages"><a href="#9-部署到-GitHub-Pages" class="headerlink" title="9. 部署到 GitHub Pages"></a>9. 部署到 GitHub Pages</h2><p><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/github-deploy.svg" alt="GitHub Pages部署流程"></p>
+<h3 id="9-1-创建-GitHub-仓库"><a href="#9-1-创建-GitHub-仓库" class="headerlink" title="9.1 创建 GitHub 仓库"></a>9.1 创建 GitHub 仓库</h3><ol>
+<li>在 GitHub 创建新仓库，命名为 <code>username.github.io</code></li>
+<li>仓库设置为 Public</li>
+</ol>
+<h3 id="9-2-安装部署插件"><a href="#9-2-安装部署插件" class="headerlink" title="9.2 安装部署插件"></a>9.2 安装部署插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-3-配置部署"><a href="#9-3-配置部署" class="headerlink" title="9.3 配置部署"></a>9.3 配置部署</h3><p>在根目录 <code>_config.yml</code> 中配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://username.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:username/username.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-4-部署博客"><a href="#9-4-部署博客" class="headerlink" title="9.4 部署博客"></a>9.4 部署博客</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清理并生成静态文件</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署到 GitHub</span></span><br><span class="line">hexo deploy</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者一键部署</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-进阶配置"><a href="#10-进阶配置" class="headerlink" title="10. 进阶配置"></a>10. 进阶配置</h2><h3 id="10-1-SEO-优化"><a href="#10-1-SEO-优化" class="headerlink" title="10.1 SEO 优化"></a>10.1 SEO 优化</h3><p>安装 SEO 插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br><span class="line">npm install hexo-generator-baidu-sitemap --save</span><br></pre></td></tr></table></figure>
+
+<p>配置 sitemap：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sitemap:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">sitemap.xml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">baidusitemap:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">baidusitemap.xml</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-2-图片懒加载"><a href="#10-2-图片懒加载" class="headerlink" title="10.2 图片懒加载"></a>10.2 图片懒加载</h3><p>在 <code>_config.butterfly.yml</code> 中启用：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">site</span></span><br><span class="line">  <span class="attr">placeholder:</span></span><br><span class="line">  <span class="attr">blur:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-3-代码高亮"><a href="#10-3-代码高亮" class="headerlink" title="10.3 代码高亮"></a>10.3 代码高亮</h3><p>配置代码块主题：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">highlight_theme:</span> <span class="string">mac</span></span><br><span class="line"><span class="attr">highlight_copy:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">highlight_lang:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">highlight_shrink:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-4-数学公式支持"><a href="#10-4-数学公式支持" class="headerlink" title="10.4 数学公式支持"></a>10.4 数学公式支持</h3><p>安装 MathJax：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-filter-mathjax --save</span><br></pre></td></tr></table></figure>
+
+<p>配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="11-移动端优化"><a href="#11-移动端优化" class="headerlink" title="11. 移动端优化"></a>11. 移动端优化</h2><h3 id="11-1-响应式设计"><a href="#11-1-响应式设计" class="headerlink" title="11.1 响应式设计"></a>11.1 响应式设计</h3><p>确保主题支持移动端：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mobile:</span></span><br><span class="line">  <span class="attr">scale:</span> <span class="number">0.8</span></span><br><span class="line">  <span class="attr">header_height:</span> <span class="string">45px</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="11-2-PWA-支持"><a href="#11-2-PWA-支持" class="headerlink" title="11.2 PWA 支持"></a>11.2 PWA 支持</h3><p>安装 PWA 插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-offline --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="12-常用脚本"><a href="#12-常用脚本" class="headerlink" title="12. 常用脚本"></a>12. 常用脚本</h2><p>创建便捷脚本 <code>scripts/blog.sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建文章</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;new&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    hexo new <span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;文章 &#x27;<span class="variable">$2</span>&#x27; 创建成功！&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地预览</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;server&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;deploy&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;博客部署完成！&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建文章</span></span><br><span class="line">./scripts/blog.sh new <span class="string">&quot;文章标题&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地预览</span></span><br><span class="line">./scripts/blog.sh server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署博客</span></span><br><span class="line">./scripts/blog.sh deploy</span><br></pre></td></tr></table></figure>
+
+<h2 id="13-常见问题解决"><a href="#13-常见问题解决" class="headerlink" title="13. 常见问题解决"></a>13. 常见问题解决</h2><h3 id="13-1-部署失败"><a href="#13-1-部署失败" class="headerlink" title="13.1 部署失败"></a>13.1 部署失败</h3><p>检查 SSH 密钥配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;your_email@example.com&quot;</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-2-主题更新"><a href="#13-2-主题更新" class="headerlink" title="13.2 主题更新"></a>13.2 主题更新</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/butterfly</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-3-插件冲突"><a href="#13-3-插件冲突" class="headerlink" title="13.3 插件冲突"></a>13.3 插件冲突</h3><p>清理 node_modules：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf node_modules</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<h2 id="14-性能优化"><a href="#14-性能优化" class="headerlink" title="14. 性能优化"></a>14. 性能优化</h2><h3 id="14-1-图片压缩"><a href="#14-1-图片压缩" class="headerlink" title="14.1 图片压缩"></a>14.1 图片压缩</h3><p>安装图片压缩插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-imagemin --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-2-CDN-加速"><a href="#14-2-CDN-加速" class="headerlink" title="14.2 CDN 加速"></a>14.2 CDN 加速</h3><p>配置 CDN：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">internal_provider:</span> <span class="string">local</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">cdnjs</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="14-3-缓存优化"><a href="#14-3-缓存优化" class="headerlink" title="14.3 缓存优化"></a>14.3 缓存优化</h3><p>启用浏览器缓存：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">open_graph:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">options:</span></span><br><span class="line">    <span class="attr">twitter_card:</span> <span class="string">summary_large_image</span></span><br><span class="line">    <span class="attr">twitter_image:</span></span><br><span class="line">    <span class="attr">twitter_id:</span></span><br><span class="line">    <span class="attr">twitter_site:</span></span><br><span class="line">    <span class="attr">google_plus:</span></span><br><span class="line">    <span class="attr">fb_admins:</span></span><br><span class="line">    <span class="attr">fb_app_id:</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="15-总结"><a href="#15-总结" class="headerlink" title="15. 总结"></a>15. 总结</h2><p>通过本教程，你已经成功搭建了一个功能完整的 Hexo 博客，包括：</p>
+<ul>
+<li>✅ Hexo 框架安装和配置</li>
+<li>✅ Butterfly 主题美化</li>
+<li>✅ Live2D 看板娘</li>
+<li>✅ Giscus 评论系统</li>
+<li>✅ 搜索功能</li>
+<li>✅ 自定义样式</li>
+<li>✅ GitHub Pages 部署</li>
+<li>✅ SEO 和性能优化</li>
+</ul>
+<p>现在你可以开始写作，分享你的知识和想法了！</p>
+<h2 id="16-相关资源"><a href="#16-相关资源" class="headerlink" title="16. 相关资源"></a>16. 相关资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://butterfly.js.org/">Butterfly 主题文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://giscus.app/zh-CN">Giscus 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.github.com/en/pages">GitHub Pages 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.markdownguide.org/">Markdown 语法指南</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>💡 <strong>提示</strong>: 定期备份你的博客源码，建议将源码也推送到 GitHub 仓库的 source 分支进行版本管理。</p>
+</blockquote>
+<blockquote>
+<p>🎉 <strong>恭喜</strong>: 你的博客搭建完成！现在开始你的写作之旅吧！</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cccignore.github.io">Yinuo Chen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cccignore.github.io/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/">https://cccignore.github.io/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cccignore.github.io" target="_blank">CYN's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/Butterfly/">Butterfly</a><a class="post-meta__tags" href="/tags/GitHub-Pages/">GitHub Pages</a><a class="post-meta__tags" href="/tags/Live2D/">Live2D</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a></div><div class="post-share"><div class="social-share" data-image="/img/blog-tutorial/cover.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/01/27/%E7%8E%B0%E4%BB%A3Web%E5%BC%80%E5%8F%91%E5%85%A8%E6%A0%88%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="现代Web开发全栈技术架构深度解析"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=1974&amp;q=80" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">现代Web开发全栈技术架构深度解析</div></div><div class="info-2"><div class="info-item-1">在快速发展的数字化时代，现代Web开发已经从简单的静态页面演进为复杂的分布式系统。本文将深入探讨当前最前沿的全栈技术架构，从微前端到云原生，从性能优化到安全防护，为开发者提供一份完整的技术路线图。   🚀 技术栈概览现代Web应用的技术栈可以分为以下几个核心层次： 前端技术栈框架选择与对比    框架 优势 适用场景 学习曲线    React 18+ 生态丰富、并发特性 大型应用、企业级项目 中等   Vue 3 渐进式、易上手 中小型项目、快速开发 较低   Svelte&#x2F;SvelteKit 编译时优化、性能卓越 性能敏感应用 中等   Next.js 14 全栈框架、SSR&#x2F;SSG SEO友好、内容网站 中高   状态管理进化 12345678910111213141516171819202122232425// Zustand - 轻量级状态管理import &#123; create &#125; from &#x27;zustand&#x27;import &#123; devtools, persist &#125; from &#x27;zu...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Yinuo Chen</div><div class="author-info-description">一个热爱技术与生活的探索者</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cccignore"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://www.instagram.com/cyn07111/" target="_blank" title="Instagram"><i class="fab fa-instagram" style="color: #E4405F;"></i></a><a class="social-icon" href="https://space.bilibili.com/284576123" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili" style="color: #FF8EB3;"></i></a><a class="social-icon" href="https://music.163.com/#/user/home?id=4930687131" target="_blank" title="网易云音乐"><i class="fas fa-music" style="color: #dd001b;"></i></a><a class="social-icon" href="https://weibo.com/u/5789743402" target="_blank" title="微博"><i class="fab fa-weibo" style="color: #E6162D;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到CYN's Blog!</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">博客搭建完整教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">1. 环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Node-js-%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 Node.js 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Git-%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 Git 安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Hexo-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.3.</span> <span class="toc-text">2. Hexo 安装与初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85-Hexo-CLI"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 安装 Hexo CLI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2 初始化博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%8D%9A%E5%AE%A2%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3 博客文件夹结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Butterfly-%E4%B8%BB%E9%A2%98%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.</span> <span class="toc-text">3. Butterfly 主题安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%8B%E8%BD%BD-Butterfly-%E4%B8%BB%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.1 下载 Butterfly 主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%90%AF%E7%94%A8%E4%B8%BB%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text">3.2 启用主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%A4%8D%E5%88%B6%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.3 复制主题配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">3.4 基础配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Live2D-%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.</span> <span class="toc-text">4. Live2D 看板娘配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%AE%89%E8%A3%85-Live2D-%E6%8F%92%E4%BB%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 安装 Live2D 插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%85%8D%E7%BD%AE-Live2D"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 配置 Live2D</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%8F%AF%E9%80%89%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.5.3.</span> <span class="toc-text">4.3 可选模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Giscus-%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.6.</span> <span class="toc-text">5. Giscus 评论系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.6.1.</span> <span class="toc-text">5.1 准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-number">1.6.2.</span> <span class="toc-text">5.2 获取配置参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E9%85%8D%E7%BD%AE-Giscus"><span class="toc-number">1.6.3.</span> <span class="toc-text">5.3 配置 Giscus</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD%E9%85%8D%E7%BD%AE"><span class="toc-number">1.7.</span> <span class="toc-text">6. 搜索功能配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AE%89%E8%A3%85%E6%90%9C%E7%B4%A2%E6%8F%92%E4%BB%B6"><span class="toc-number">1.7.1.</span> <span class="toc-text">6.1 安装搜索插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E9%85%8D%E7%BD%AE%E6%90%9C%E7%B4%A2"><span class="toc-number">1.7.2.</span> <span class="toc-text">6.2 配置搜索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"><span class="toc-number">1.8.</span> <span class="toc-text">7. 自定义样式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89-CSS"><span class="toc-number">1.8.1.</span> <span class="toc-text">7.1 创建自定义 CSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E5%BC%95%E5%85%A5%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"><span class="toc-number">1.8.2.</span> <span class="toc-text">7.2 引入自定义样式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%88%9B%E5%BB%BA%E9%A1%B5%E9%9D%A2%E5%92%8C%E6%96%87%E7%AB%A0"><span class="toc-number">1.9.</span> <span class="toc-text">8. 创建页面和文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%88%9B%E5%BB%BA%E5%85%B3%E4%BA%8E%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.9.1.</span> <span class="toc-text">8.1 创建关于页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.9.2.</span> <span class="toc-text">8.2 创建标签页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.9.3.</span> <span class="toc-text">8.3 创建分类页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E5%88%9B%E5%BB%BA%E6%96%B0%E6%96%87%E7%AB%A0"><span class="toc-number">1.9.4.</span> <span class="toc-text">8.4 创建新文章</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E9%83%A8%E7%BD%B2%E5%88%B0-GitHub-Pages"><span class="toc-number">1.10.</span> <span class="toc-text">9. 部署到 GitHub Pages</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-%E5%88%9B%E5%BB%BA-GitHub-%E4%BB%93%E5%BA%93"><span class="toc-number">1.10.1.</span> <span class="toc-text">9.1 创建 GitHub 仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E6%8F%92%E4%BB%B6"><span class="toc-number">1.10.2.</span> <span class="toc-text">9.2 安装部署插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2"><span class="toc-number">1.10.3.</span> <span class="toc-text">9.3 配置部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2"><span class="toc-number">1.10.4.</span> <span class="toc-text">9.4 部署博客</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E8%BF%9B%E9%98%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">1.11.</span> <span class="toc-text">10. 进阶配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-1-SEO-%E4%BC%98%E5%8C%96"><span class="toc-number">1.11.1.</span> <span class="toc-text">10.1 SEO 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-2-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.11.2.</span> <span class="toc-text">10.2 图片懒加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-3-%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE"><span class="toc-number">1.11.3.</span> <span class="toc-text">10.3 代码高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-4-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%94%AF%E6%8C%81"><span class="toc-number">1.11.4.</span> <span class="toc-text">10.4 数学公式支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%BC%98%E5%8C%96"><span class="toc-number">1.12.</span> <span class="toc-text">11. 移动端优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-1-%E5%93%8D%E5%BA%94%E5%BC%8F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.12.1.</span> <span class="toc-text">11.1 响应式设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-2-PWA-%E6%94%AF%E6%8C%81"><span class="toc-number">1.12.2.</span> <span class="toc-text">11.2 PWA 支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">1.13.</span> <span class="toc-text">12. 常用脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-number">1.14.</span> <span class="toc-text">13. 常见问题解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#13-1-%E9%83%A8%E7%BD%B2%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.14.1.</span> <span class="toc-text">13.1 部署失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-2-%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%96%B0"><span class="toc-number">1.14.2.</span> <span class="toc-text">13.2 主题更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-3-%E6%8F%92%E4%BB%B6%E5%86%B2%E7%AA%81"><span class="toc-number">1.14.3.</span> <span class="toc-text">13.3 插件冲突</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.15.</span> <span class="toc-text">14. 性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#14-1-%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9"><span class="toc-number">1.15.1.</span> <span class="toc-text">14.1 图片压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-2-CDN-%E5%8A%A0%E9%80%9F"><span class="toc-number">1.15.2.</span> <span class="toc-text">14.2 CDN 加速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-3-%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96"><span class="toc-number">1.15.3.</span> <span class="toc-text">14.3 缓存优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-%E6%80%BB%E7%BB%93"><span class="toc-number">1.16.</span> <span class="toc-text">15. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-number">1.17.</span> <span class="toc-text">16. 相关资源</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%88%A4%E6%96%AD%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析判断题整理"><img src= "/img/loading.gif" data-lazy-src="https://www.17golang.com/uploads/20250705/175168668468689e1cc0973.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python数据分析判断题整理"/></a><div class="content"><a class="title" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%88%A4%E6%96%AD%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析判断题整理">Python数据分析判断题整理</a><time datetime="2025-06-20T15:43:27.000Z" title="发表于 2025-06-20 23:43:27">2025-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%80%89%E6%8B%A9%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析选择题整理"><img src= "/img/loading.gif" data-lazy-src="https://www.17golang.com/uploads/20250704/175162132268679eca78e8c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python数据分析选择题整理"/></a><div class="content"><a class="title" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%80%89%E6%8B%A9%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析选择题整理">Python数据分析选择题整理</a><time datetime="2025-06-20T04:04:41.000Z" title="发表于 2025-06-20 12:04:41">2025-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/18/%E4%BD%8E%E6%88%90%E6%9C%AC%E6%A2%AF%E5%AD%90-%E8%B5%94%E9%92%B1%E6%9C%BA%E5%9C%BA/" title="低成本梯子-赔钱机场"><img src= "/img/loading.gif" data-lazy-src="https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/vpn_safety.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="低成本梯子-赔钱机场"/></a><div class="content"><a class="title" href="/2025/06/18/%E4%BD%8E%E6%88%90%E6%9C%AC%E6%A2%AF%E5%AD%90-%E8%B5%94%E9%92%B1%E6%9C%BA%E5%9C%BA/" title="低成本梯子-赔钱机场">低成本梯子-赔钱机场</a><time datetime="2025-06-17T17:24:26.000Z" title="发表于 2025-06-18 01:24:26">2025-06-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/27/%E7%8E%B0%E4%BB%A3Web%E5%BC%80%E5%8F%91%E5%85%A8%E6%A0%88%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="现代Web开发全栈技术架构深度解析"><img src= "/img/loading.gif" data-lazy-src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=1974&amp;q=80" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="现代Web开发全栈技术架构深度解析"/></a><div class="content"><a class="title" href="/2025/01/27/%E7%8E%B0%E4%BB%A3Web%E5%BC%80%E5%8F%91%E5%85%A8%E6%A0%88%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="现代Web开发全栈技术架构深度解析">现代Web开发全栈技术架构深度解析</a><time datetime="2025-01-27T07:30:00.000Z" title="发表于 2025-01-27 15:30:00">2025-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/" title="博客搭建完整教程"><img src= "/img/loading.gif" data-lazy-src="/img/blog-tutorial/cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客搭建完整教程"/></a><div class="content"><a class="title" href="/2025/01/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/" title="博客搭建完整教程">博客搭建完整教程</a><time datetime="2025-01-27T04:00:00.000Z" title="发表于 2025-01-27 12:00:00">2025-01-27</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 By Yinuo Chen</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.0-b2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'cccignore/cccignore.github.io',
+      'data-repo-id': 'R_kgDOO8frQw',
+      'data-category-id': 'DIC_kwDOO8frQ84CvWXh',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script src="/js/sakuraPlus.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
