@@ -1,0 +1,571 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>用 ID3（信息增益）手算两道题：缺失值 + 连续特征 | Welcome to Enoch's Blog!</title><meta name="author" content="Enoch"><meta name="copyright" content="Enoch"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="记录课堂两道 ID3 信息增益练习的完整手算过程，覆盖缺失值处理、连续特征阈值枚举和重点公式，便于复习查阅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 ID3（信息增益）手算两道题：缺失值 + 连续特征">
+<meta property="og:url" content="https://cccignore.github.io/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/index.html">
+<meta property="og:site_name" content="Welcome to Enoch&#39;s Blog!">
+<meta property="og:description" content="记录课堂两道 ID3 信息增益练习的完整手算过程，覆盖缺失值处理、连续特征阈值枚举和重点公式，便于复习查阅">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cccignore.github.io/img/my-avatar.jpg">
+<meta property="article:published_time" content="2025-10-18T10:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-18T15:13:17.471Z">
+<meta property="article:author" content="Enoch">
+<meta property="article:tag" content="决策树">
+<meta property="article:tag" content="ID3">
+<meta property="article:tag" content="信息增益">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cccignore.github.io/img/my-avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "用 ID3（信息增益）手算两道题：缺失值 + 连续特征",
+  "url": "https://cccignore.github.io/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/",
+  "image": "https://cccignore.github.io/img/my-avatar.jpg",
+  "datePublished": "2025-10-18T10:00:00.000Z",
+  "dateModified": "2025-10-18T15:13:17.471Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Enoch",
+      "url": "https://cccignore.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://cccignore.github.io/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '用 ID3（信息增益）手算两道题：缺失值 + 连续特征',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/fill-left.css"><script src="/live2d-widget/dist/autoload.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/img/my-background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/my-background.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src= "/img/loading.gif" data-lazy-src="/img/logo.png" alt="Logo"><span class="site-name">Welcome to Enoch's Blog!</span></a><a class="nav-page-title" href="/"><span class="site-name">用 ID3（信息增益）手算两道题：缺失值 + 连续特征</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">用 ID3（信息增益）手算两道题：缺失值 + 连续特征</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-10-18T10:00:00.000Z" title="发表于 2025-10-18 18:00:00">2025-10-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-18T15:13:17.471Z" title="更新于 2025-10-18 23:13:17">2025-10-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="用-ID3（信息增益）手算两道题：缺失值-连续特征"><a href="#用-ID3（信息增益）手算两道题：缺失值-连续特征" class="headerlink" title="用 ID3（信息增益）手算两道题：缺失值 + 连续特征"></a>用 ID3（信息增益）手算两道题：缺失值 + 连续特征</h1><p>这篇笔记把课堂两道练习题按 ID3 的信息增益法完整手算一遍，并把用到的公式、处理缺失值与连续特征的做法先讲清楚。熵一律用 $\log_2$。</p>
+<hr>
+<h2 id="0-预备知识与公式"><a href="#0-预备知识与公式" class="headerlink" title="0) 预备知识与公式"></a>0) 预备知识与公式</h2><p>这一部分把“三件兵器”都解释清楚：熵用来量混乱度、信息增益衡量划分价值、连续 &#x2F; 缺失特征怎么处理。</p>
+<h3 id="0-1-熵（Entropy）到底在量什么？"><a href="#0-1-熵（Entropy）到底在量什么？" class="headerlink" title="0.1 熵（Entropy）到底在量什么？"></a>0.1 熵（Entropy）到底在量什么？</h3><p>熵就是“混杂系数”。假设数据集 $S$ 中有 $k$ 种类别，比例分别是 $p_1,\dots,p_k$（二分类时只需要 $p$ 与 $1-p$），则<br>$$<br>\mathrm{Ent}(S) &#x3D; -\sum_{c&#x3D;1}^{k} p_c \log_2 p_c<br>$$</p>
+<ul>
+<li>纯净集合（全是“是”或全是“否”）有 $p&#x3D;1$ ⇒ $\mathrm{Ent}&#x3D;0$，说明完全确定；</li>
+<li>类别越平均、越“乱”，熵越大（在二分类中最大为 1，当 $p&#x3D;0.5$ 时达到峰值）。</li>
+</ul>
+<p>直观上，熵描述了我们“猜对”的难度——越难猜对，熵越高，就越需要继续分支。</p>
+<h3 id="0-2-信息增益（Information-Gain-ID3）为什么这么算？"><a href="#0-2-信息增益（Information-Gain-ID3）为什么这么算？" class="headerlink" title="0.2 信息增益（Information Gain, ID3）为什么这么算？"></a>0.2 信息增益（Information Gain, ID3）为什么这么算？</h3><p>选一个离散特征 $A$，它可能有多个取值，组成集合 $\mathcal{V}$。按这些取值把原始集合 $S$ 切开，我们得到子集 $S_v$。信息增益的定义是：<br>$$<br>\mathrm{Gain}(S,A) &#x3D; \mathrm{Ent}(S) - \sum_{v\in\mathcal{V}} \frac{|S_v|}{|S|} ,\mathrm{Ent}(S_v)<br>$$</p>
+<ul>
+<li>第一项 $\mathrm{Ent}(S)$ 是“原始混乱度”；</li>
+<li>第二项是按各子集的大小加权后的“剩余混乱度”；</li>
+<li>它们的差值就是“减少了多少不确定性”。差值越大，说明这个特征把数据切得越干净，越值得优先作为节点。</li>
+</ul>
+<p>ID3 的策略就是：在当前结点，把信息增益最大的特征拿来分裂。</p>
+<h3 id="0-3-连续特征的离散化（阈值枚举）怎么做？"><a href="#0-3-连续特征的离散化（阈值枚举）怎么做？" class="headerlink" title="0.3 连续特征的离散化（阈值枚举）怎么做？"></a>0.3 连续特征的离散化（阈值枚举）怎么做？</h3><p>面对连续特征（比如年龄、收入），我们不能直接像离散特征那样枚举所有取值。常见做法：</p>
+<ol>
+<li><strong>排序</strong>该特征的所有数值；</li>
+<li>只考虑<strong>相邻数值的中点</strong>作为候选阈值 $\theta$（避免重复计算）；</li>
+<li>对每个候选阈值，把数据分成“$\le \theta$”与“$&gt; \theta$”两半，计算信息增益：<br>$$<br>\mathrm{Gain}(S,\theta) &#x3D; \mathrm{Ent}(S) -<br>\left(\frac{|L|}{|S|}\mathrm{Ent}(L) + \frac{|R|}{|S|}\mathrm{Ent}(R)\right)<br>$$<br>这里 $L$ 和 $R$ 分别代表左、右子集；</li>
+<li>选择增益最大的阈值作为这个连续特征的最佳切分点。</li>
+</ol>
+<p>这样处理既能保持和 ID3 一致的思想，又能高效覆盖所有可能的有效划分。</p>
+<h3 id="0-4-缺失值怎么处理才公平？"><a href="#0-4-缺失值怎么处理才公平？" class="headerlink" title="0.4 缺失值怎么处理才公平？"></a>0.4 缺失值怎么处理才公平？</h3><p>当一个样本在特征 $A$ 上缺值（写成“？”）时，需要分两步处理：</p>
+<ul>
+<li><strong>算熵时跳过</strong>缺失值：例如求“是否有课”这个特征的熵，只有“有”“无”的样本才参与；</li>
+<li><strong>加权时记得把缺失样本的占比乘回来</strong>：用 $\tfrac{|S_v|}{|S|}$ 这类权重时，$|S_v|$ 仍然是原集合里该取值的样本数（包括那些缺失的样本）。这正是课堂上同学们的做法──保证整体占比不被扭曲。</li>
+</ul>
+<p>随数据质量不同，也有其它策略，比如把缺失值单独当一个类别，或先做插值；不过本笔记按课堂里的“忽略熵、保留权重”方式来算，方便核对。</p>
+<hr>
+<h2 id="1-题一：离散特征-缺失值"><a href="#1-题一：离散特征-缺失值" class="headerlink" title="1) 题一：离散特征 + 缺失值"></a>1) 题一：离散特征 + 缺失值</h2><p><strong>目标</strong>：是否去健身房（“是&#x2F;否”），共 9 条。</p>
+<table>
+<thead>
+<tr>
+<th align="right">序号</th>
+<th>天气</th>
+<th>是否有课</th>
+<th>距离</th>
+<th>是否去健身房</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>晴</td>
+<td>有</td>
+<td>近</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>晴</td>
+<td>无</td>
+<td>远</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>雨</td>
+<td>?</td>
+<td>近</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>阴</td>
+<td>有</td>
+<td>中</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>晴</td>
+<td>无</td>
+<td>近</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>雨</td>
+<td>无</td>
+<td>远</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>阴</td>
+<td>?</td>
+<td>中</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>雨</td>
+<td>有</td>
+<td>近</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>阴</td>
+<td>无</td>
+<td>远</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>总体：正例 5、反例 4<br>$$<br>\mathrm{Ent}(D) &#x3D; -\frac{5}{9}\log_2\frac{5}{9} - \frac{4}{9}\log_2\frac{4}{9} &#x3D; \mathbf{0.9911}<br>$$</p>
+<h3 id="1-1-特征「是否有课」"><a href="#1-1-特征「是否有课」" class="headerlink" title="1.1 特征「是否有课」"></a>1.1 特征「是否有课」</h3><ul>
+<li><strong>有</strong>：${1,4,8}$ → 2 是 &#x2F; 1 否 → $\mathrm{Ent}&#x3D;0.9183$</li>
+<li><strong>无</strong>：${2,5,6,9}$ → 1 是 &#x2F; 3 否 → $\mathrm{Ent}&#x3D;0.8113$</li>
+<li>“？” 两条不参与熵，但加权仍用 $\tfrac{3}{9}$ 与 $\tfrac{4}{9}$：<br>$$<br>\sum w,\mathrm{Ent} &#x3D; \tfrac{3}{9}\cdot 0.9183 + \tfrac{4}{9}\cdot 0.8113 &#x3D; \mathbf{0.6667}<br>$$<br>$$<br>\mathrm{Gain}(D,\text{有课}) &#x3D; 0.9911 - 0.6667 &#x3D; \mathbf{0.3244}<br>$$</li>
+</ul>
+<h3 id="1-2-特征「天气」"><a href="#1-2-特征「天气」" class="headerlink" title="1.2 特征「天气」"></a>1.2 特征「天气」</h3><ul>
+<li>晴 ${1,2,5}$：2&#x2F;1 → $\mathrm{Ent}&#x3D;0.9183$</li>
+<li>阴 ${4,7,9}$：1&#x2F;2 → $\mathrm{Ent}&#x3D;0.9183$</li>
+<li>雨 ${3,6,8}$：2&#x2F;1 → $\mathrm{Ent}&#x3D;0.9183$</li>
+</ul>
+<p>加权和 &#x3D; 0.9183，故<br>$$<br>\mathrm{Gain}(D,\text{天气}) &#x3D; 0.9911 - 0.9183 &#x3D; \mathbf{0.0728}<br>$$</p>
+<h3 id="1-3-特征「距离」"><a href="#1-3-特征「距离」" class="headerlink" title="1.3 特征「距离」"></a>1.3 特征「距离」</h3><ul>
+<li>近 ${1,3,5,8}$：4&#x2F;0 → $\mathrm{Ent}&#x3D;0$</li>
+<li>中 ${4,7}$：1&#x2F;1 → $\mathrm{Ent}&#x3D;1$</li>
+<li>远 ${2,6,9}$：0&#x2F;3 → $\mathrm{Ent}&#x3D;0$</li>
+</ul>
+<p>加权和 $&#x3D;\tfrac{4}{9}\cdot 0 + \tfrac{2}{9}\cdot 1 + \tfrac{3}{9}\cdot 0 &#x3D; \tfrac{2}{9} &#x3D; 0.2222$，<br>$$<br>\mathrm{Gain}(D,\text{距离}) &#x3D; 0.9911 - 0.2222 &#x3D; \mathbf{0.7689} \quad (\text{最大})<br>$$</p>
+<p><strong>结论（根节点）</strong>：首选 <strong>距离</strong>。</p>
+<ul>
+<li>距离 &#x3D; 近 ⇒ 纯正例 ⇒ <strong>是</strong>；</li>
+<li>距离 &#x3D; 远 ⇒ 纯反例 ⇒ <strong>否</strong>；</li>
+<li>距离 &#x3D; 中 ⇒ ${4:\text{否}, 7:\text{是}}$ 对半。该分支可：<ul>
+<li>直接多数表决（全局 5:4）→ <strong>是</strong>；或</li>
+<li>尝试再分：但两样本在“天气”同为“阴”，“有课”又有缺失，无法纯化。实作中通常设为叶子并用多数类。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-题二：连续特征（年龄）-离散特征（是否有车）"><a href="#2-题二：连续特征（年龄）-离散特征（是否有车）" class="headerlink" title="2) 题二：连续特征（年龄） + 离散特征（是否有车）"></a>2) 题二：连续特征（年龄） + 离散特征（是否有车）</h2><p><strong>目标</strong>：是否购买保险（“是&#x2F;否”），共 8 条：</p>
+<table>
+<thead>
+<tr>
+<th align="right">序号</th>
+<th align="right">年龄</th>
+<th>是否有车</th>
+<th>购保</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="right">25</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="right">30</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="right">35</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="right">40</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="right">45</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td align="right">50</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td align="right">55</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td align="right">60</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<p>总体正例 6、反例 2：<br>$$<br>\mathrm{Ent}(D) &#x3D; -\frac{6}{8}\log_2\frac{6}{8} - \frac{2}{8}\log_2\frac{2}{8} &#x3D; \mathbf{0.8113}<br>$$</p>
+<h3 id="2-1-连续特征「年龄」的候选阈值"><a href="#2-1-连续特征「年龄」的候选阈值" class="headerlink" title="2.1 连续特征「年龄」的候选阈值"></a>2.1 连续特征「年龄」的候选阈值</h3><p>排序后，中点阈值：$27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5$。</p>
+<p>| 阈值 $\theta$ | 左侧样本 $|L|$ | 右侧样本 $|R|$ | $\mathrm{Ent}(L)$ | $\mathrm{Ent}(R)$ | 信息增益 |<br>| :———–: | :———–: | :———–: | :————–: | :————–: | :——–: |<br>| 27.5 | 1 | 7 | 0 | 0.5917 | <strong>0.2936</strong> |<br>| 32.5 | 2 | 6 | 1 | 0.6500 | <strong>0.0738</strong> |<br>| <strong>37.5</strong> | 3 | 5 | 0.9183 | 0 | <strong>0.4669（最大）</strong> |<br>| 42.5 | 4 | 4 | 1 | 0 | <strong>0.3113</strong> |<br>| 47.5 | 5 | 3 | 0.9710 | 0 | <strong>0.2044</strong> |<br>| 52.5 | 6 | 2 | 0.9183 | 0 | <strong>0.1226</strong> |<br>| 57.5 | 7 | 1 | 0.8631 | 0 | <strong>0.0560</strong> |</p>
+<p>→ 最佳阈值：$\theta &#x3D; 37.5$。</p>
+<h3 id="2-2-离散特征「是否有车」"><a href="#2-2-离散特征「是否有车」" class="headerlink" title="2.2 离散特征「是否有车」"></a>2.2 离散特征「是否有车」</h3><ul>
+<li>有车 ${2,4,6,8}$：全“是” → $\mathrm{Ent}&#x3D;0$</li>
+<li>无车 ${1,3,5,7}$：2 是 &#x2F; 2 否 → $\mathrm{Ent}&#x3D;1$</li>
+</ul>
+<p>加权熵 &#x3D; 0.5，<br>$$<br>\mathrm{Gain}(D,\text{有车}) &#x3D; 0.8113 - 0.5 &#x3D; \mathbf{0.3113}<br>$$<br>小于年龄的最佳划分（0.4669）。</p>
+<p><strong>结论（根节点）</strong>：先按 <strong>年龄 $\le 37.5$</strong> 划分。得到的树非常简单：</p>
+<ul>
+<li>年龄 $&gt; 37.5$ ⇒ 纯“是” ⇒ <strong>购买</strong>；</li>
+<li>年龄 $\le 37.5$ ⇒ 再看 <strong>是否有车</strong>：<ul>
+<li>有车 ⇒ <strong>购买</strong>；</li>
+<li>无车 ⇒ <strong>不购买</strong>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-小结与“踩坑提醒”"><a href="#3-小结与“踩坑提醒”" class="headerlink" title="3) 小结与“踩坑提醒”"></a>3) 小结与“踩坑提醒”</h2><ul>
+<li>对数底要一致（本文用 $\log_2$），否则数值不对。</li>
+<li>缺失值常见处理法有多种；本文按“忽略缺失求熵，但按总体比例加权”，与课堂&#x2F;同学一致。</li>
+<li>连续特征：只取相邻值中点作候选阈值，既正确又高效。</li>
+<li>四舍五入：中间保留 4 位小数足够（文中展示到 4 位）。</li>
+<li>叶子判定：若子集极小且再分无效，按多数类作叶子即可。</li>
+</ul>
+<hr>
+<h2 id="4-速查模板（写作时可复用）"><a href="#4-速查模板（写作时可复用）" class="headerlink" title="4) 速查模板（写作时可复用）"></a>4) 速查模板（写作时可复用）</h2><ol>
+<li>统计总体正负：算 $\mathrm{Ent}(D)$。</li>
+<li>离散特征：逐取值分组 → 算各子集熵 → 加权求和 → 得到 $\mathrm{Gain}$。</li>
+<li>连续特征：排序 → 枚举相邻中点 → 每个 $\theta$ 都算左右两侧熵与加权和 → 取最大增益。</li>
+<li>选择增益最大的特征&#x2F;阈值作为当前节点；若子集不纯，递归。</li>
+<li>数据极少或无法继续有效划分 → 多数表决成叶子。</li>
+</ol>
+<hr>
+<p>以上就是两道题按课堂口径的完整可复现计算。你可以直接把“公式 + 练习步骤 + 小结”复制到复习笔记中。如果需要，我也可以把两棵树画成图或导出成可打印的步骤表。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cccignore.github.io">Enoch</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cccignore.github.io/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/">https://cccignore.github.io/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cccignore.github.io" target="_blank">Welcome to Enoch's Blog!</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a><a class="post-meta__tags" href="/tags/ID3/">ID3</a><a class="post-meta__tags" href="/tags/%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A/">信息增益</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%A6/">数学</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div><div class="post-share"><div class="social-share" data-image="/img/my-avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/" title="中文说唱分享（PART I）"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://img0.baidu.com/it/u=975547438,3312695868&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=889&amp;h=500" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">中文说唱分享（PART I）</div></div><div class="info-2"><div class="info-item-1">  一、华云龙 KLE1.《山东王 Freestyle》      2. 《枣庄一夜》      3. 《底层特律》      4. 《天下谁人不识君》        二、Echo 王耍大1.《关关难》      2.《不可能》      3.《害哈（feat.派克特）》      三、艾志恒 Asen1.《芳草地》      2.《Money Focused Freestyle》     </div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Enoch</div><div class="author-info-description">记录流动的思绪，留住片刻的光</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cccignore"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://www.instagram.com/cyn07111/" target="_blank" title="Instagram"><i class="fab fa-instagram" style="color: #E4405F;"></i></a><a class="social-icon" href="https://space.bilibili.com/284576123" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili" style="color: #FF8EB3;"></i></a><a class="social-icon" href="https://music.163.com/#/user/home?id=4930687131" target="_blank" title="网易云音乐"><i class="fas fa-music" style="color: #dd001b;"></i></a><a class="social-icon" href="https://weibo.com/u/5789743402" target="_blank" title="微博"><i class="fab fa-weibo" style="color: #E6162D;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>每日一言</span></div><div class="announcement_content">每日一言加载中...</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8-ID3%EF%BC%88%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%EF%BC%89%E6%89%8B%E7%AE%97%E4%B8%A4%E9%81%93%E9%A2%98%EF%BC%9A%E7%BC%BA%E5%A4%B1%E5%80%BC-%E8%BF%9E%E7%BB%AD%E7%89%B9%E5%BE%81"><span class="toc-number">1.</span> <span class="toc-text">用 ID3（信息增益）手算两道题：缺失值 + 连续特征</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86%E4%B8%8E%E5%85%AC%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">0) 预备知识与公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-1-%E7%86%B5%EF%BC%88Entropy%EF%BC%89%E5%88%B0%E5%BA%95%E5%9C%A8%E9%87%8F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">0.1 熵（Entropy）到底在量什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-2-%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%EF%BC%88Information-Gain-ID3%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E7%AE%97%EF%BC%9F"><span class="toc-number">1.1.2.</span> <span class="toc-text">0.2 信息增益（Information Gain, ID3）为什么这么算？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-3-%E8%BF%9E%E7%BB%AD%E7%89%B9%E5%BE%81%E7%9A%84%E7%A6%BB%E6%95%A3%E5%8C%96%EF%BC%88%E9%98%88%E5%80%BC%E6%9E%9A%E4%B8%BE%EF%BC%89%E6%80%8E%E4%B9%88%E5%81%9A%EF%BC%9F"><span class="toc-number">1.1.3.</span> <span class="toc-text">0.3 连续特征的离散化（阈值枚举）怎么做？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-4-%E7%BC%BA%E5%A4%B1%E5%80%BC%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86%E6%89%8D%E5%85%AC%E5%B9%B3%EF%BC%9F"><span class="toc-number">1.1.4.</span> <span class="toc-text">0.4 缺失值怎么处理才公平？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A2%98%E4%B8%80%EF%BC%9A%E7%A6%BB%E6%95%A3%E7%89%B9%E5%BE%81-%E7%BC%BA%E5%A4%B1%E5%80%BC"><span class="toc-number">1.2.</span> <span class="toc-text">1) 题一：离散特征 + 缺失值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%89%B9%E5%BE%81%E3%80%8C%E6%98%AF%E5%90%A6%E6%9C%89%E8%AF%BE%E3%80%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.1 特征「是否有课」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%89%B9%E5%BE%81%E3%80%8C%E5%A4%A9%E6%B0%94%E3%80%8D"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.2 特征「天气」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%89%B9%E5%BE%81%E3%80%8C%E8%B7%9D%E7%A6%BB%E3%80%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">1.3 特征「距离」</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%A2%98%E4%BA%8C%EF%BC%9A%E8%BF%9E%E7%BB%AD%E7%89%B9%E5%BE%81%EF%BC%88%E5%B9%B4%E9%BE%84%EF%BC%89-%E7%A6%BB%E6%95%A3%E7%89%B9%E5%BE%81%EF%BC%88%E6%98%AF%E5%90%A6%E6%9C%89%E8%BD%A6%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">2) 题二：连续特征（年龄） + 离散特征（是否有车）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%BF%9E%E7%BB%AD%E7%89%B9%E5%BE%81%E3%80%8C%E5%B9%B4%E9%BE%84%E3%80%8D%E7%9A%84%E5%80%99%E9%80%89%E9%98%88%E5%80%BC"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 连续特征「年龄」的候选阈值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%A6%BB%E6%95%A3%E7%89%B9%E5%BE%81%E3%80%8C%E6%98%AF%E5%90%A6%E6%9C%89%E8%BD%A6%E3%80%8D"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2 离散特征「是否有车」</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B0%8F%E7%BB%93%E4%B8%8E%E2%80%9C%E8%B8%A9%E5%9D%91%E6%8F%90%E9%86%92%E2%80%9D"><span class="toc-number">1.4.</span> <span class="toc-text">3) 小结与“踩坑提醒”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%80%9F%E6%9F%A5%E6%A8%A1%E6%9D%BF%EF%BC%88%E5%86%99%E4%BD%9C%E6%97%B6%E5%8F%AF%E5%A4%8D%E7%94%A8%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">4) 速查模板（写作时可复用）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/" title="用 ID3（信息增益）手算两道题：缺失值 + 连续特征">用 ID3（信息增益）手算两道题：缺失值 + 连续特征</a><time datetime="2025-10-18T10:00:00.000Z" title="发表于 2025-10-18 18:00:00">2025-10-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/" title="中文说唱分享（PART I）"><img src= "/img/loading.gif" data-lazy-src="https://img0.baidu.com/it/u=975547438,3312695868&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=889&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="中文说唱分享（PART I）"/></a><div class="content"><a class="title" href="/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/" title="中文说唱分享（PART I）">中文说唱分享（PART I）</a><time datetime="2025-09-27T11:31:35.000Z" title="发表于 2025-09-27 19:31:35">2025-09-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/21/%E8%BF%9C%E7%A8%8B%20SSH%20%E4%BD%BF%E7%94%A8%20Codex%EF%BC%9A%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0%20Clash%20%E4%BB%A3%E7%90%86%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="远程 SSH 使用 Codex：转发本地 Clash 代理到服务器">远程 SSH 使用 Codex：转发本地 Clash 代理到服务器</a><time datetime="2025-06-21T04:00:00.000Z" title="发表于 2025-06-21 12:00:00">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%88%A4%E6%96%AD%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析判断题整理"><img src= "/img/loading.gif" data-lazy-src="https://www.17golang.com/uploads/20250705/175168668468689e1cc0973.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python数据分析判断题整理"/></a><div class="content"><a class="title" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%88%A4%E6%96%AD%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析判断题整理">Python数据分析判断题整理</a><time datetime="2025-06-20T15:43:27.000Z" title="发表于 2025-06-20 23:43:27">2025-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%80%89%E6%8B%A9%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析选择题整理"><img src= "/img/loading.gif" data-lazy-src="https://www.17golang.com/uploads/20250704/175162132268679eca78e8c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python数据分析选择题整理"/></a><div class="content"><a class="title" href="/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%80%89%E6%8B%A9%E9%A2%98%E6%95%B4%E7%90%86/" title="Python数据分析选择题整理">Python数据分析选择题整理</a><time datetime="2025-06-20T04:04:41.000Z" title="发表于 2025-06-20 12:04:41">2025-06-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 By Enoch</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.0-b2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'cccignore/cccignore.github.io',
+      'data-repo-id': 'R_kgDOO8frQw',
+      'data-category-id': 'DIC_kwDOO8frQ84CvWXh',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script src="/js/sakuraPlus.js"></script><script src="/js/daily-quote.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
