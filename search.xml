@@ -2004,424 +2004,6 @@ Markdown 语法指南
       </tags>
   </entry>
   <entry>
-    <title>用 ID3（信息增益）手算两道题：缺失值 + 连续特征</title>
-    <url>/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/</url>
-    <content><![CDATA[用 ID3（信息增益）手算两道题：缺失值 + 连续特征这篇笔记把课堂两道练习题按 ID3 的信息增益法完整手算一遍，并把用到的公式、处理缺失值与连续特征的做法先讲清楚。熵一律用 $\log_2$。
-
-0. 算法与公式数值全部保留 4 位小数；所有对数底为 2。
-0.1 熵（Entropy）二分类数据集 $S$ 中，正例比例为 $p$、反例为 $1-p$：$$\mathrm{Ent}(S)&#x3D; -\sum_{c\in{+,-}} p_c \log_2 p_c&#x3D; -p\log_2 p - (1-p)\log_2(1-p)$$
-0.2 信息增益（Information Gain）离散特征 $A$ 取值集合为 $\mathcal{V}$，划分后子集为 $S_v$：$$\begin{aligned}\mathrm{Gain}(S,A)&amp;&#x3D; \mathrm{Ent}(S) \&amp;\quad - \sum_{v\in\mathcal{V}} \frac{|S_v|}{|S|},\mathrm{Ent}(S_v)\end{aligned}$$
-0.3 连续特征阈值连续特征按数值升序，取相邻中点为候选 $\theta$。划分 $L&#x3D;{x\le\theta},R&#x3D;{x&gt;\theta}$：$$\begin{aligned}\mathrm{Gain}(S,\theta)&amp;&#x3D; \mathrm{Ent}(S) \&amp;\quad - \frac{|L|}{|S|}\mathrm{Ent}(L)     - \frac{|R|}{|S|}\mathrm{Ent}(R)\end{aligned}$$
-0.4 缺失值处理特征 $A$ 的缺失样本（记为“？”）不参与熵计算；但在信息增益加权时，依旧按照 $\tfrac{|S_v|}{|S|}$ 使用其在原集合中的占比。这与课堂的写法一致。
-
-1) 题一：离散特征 + 缺失值目标变量：是否去健身房（是&#x2F;否），共 9 条。
-
-
-
-序号
-天气
-是否有课
-距离
-是否去健身房
-
-
-
-1
-晴
-有
-近
-是
-
-
-2
-晴
-无
-远
-否
-
-
-3
-雨
-?
-近
-是
-
-
-4
-阴
-有
-中
-否
-
-
-5
-晴
-无
-近
-是
-
-
-6
-雨
-无
-远
-否
-
-
-7
-阴
-?
-中
-是
-
-
-8
-雨
-有
-近
-是
-
-
-9
-阴
-无
-远
-否
-
-
-1.0 数据集熵总体正例 5、反例 4：$$\begin{aligned}\mathrm{Ent}(D)&amp;&#x3D; -\frac{5}{9}\log_2\frac{5}{9} - \frac{4}{9}\log_2\frac{4}{9} \&amp;&#x3D; 0.9911\end{aligned}$$
-1.1 特征「是否有课」
-有：${1,4,8}$（2 是 &#x2F; 1 否）$$\mathrm{Ent}(D_{\text{有}})&#x3D; -\frac{2}{3}\log_2\frac{2}{3} - \frac{1}{3}\log_2\frac{1}{3}&#x3D; 0.9183$$
-无：${2,5,6,9}$（1 是 &#x2F; 3 否）$$\mathrm{Ent}(D_{\text{无}})&#x3D; -\frac{1}{4}\log_2\frac{1}{4} - \frac{3}{4}\log_2\frac{3}{4}&#x3D; 0.8113$$
-
-缺失样本两条忽略于熵，但加权仍按 $\tfrac{3}{9}$ 与 $\tfrac{4}{9}$：$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{3}{9}\cdot 0.9183 + \frac{4}{9}\cdot 0.8113&#x3D; 0.6667$$$$\boxed{\mathrm{Gain}(D,\text{有课}) &#x3D; 0.9911 - 0.6667 &#x3D; 0.3244}$$
-1.2 特征「天气」三种天气的熵完全相同：$$\mathrm{Ent}(D_{\text{晴}})&#x3D;\mathrm{Ent}(D_{\text{阴}})&#x3D;\mathrm{Ent}(D_{\text{雨}})&#x3D;0.9183$$$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{3}{9}\cdot 0.9183 \times 3&#x3D; 0.9183$$$$\boxed{\mathrm{Gain}(D,\text{天气}) &#x3D; 0.9911 - 0.9183 &#x3D; 0.0728}$$
-1.3 特征「距离」
-近：${1,3,5,8}$（4&#x2F;0）$$\mathrm{Ent}(D_{\text{近}})&#x3D;0$$
-中：${4,7}$（1&#x2F;1）$$\mathrm{Ent}(D_{\text{中}})&#x3D; -\tfrac{1}{2}\log_2\tfrac{1}{2}-\tfrac{1}{2}\log_2\tfrac{1}{2}&#x3D;1$$
-远：${2,6,9}$（0&#x2F;3）$$\mathrm{Ent}(D_{\text{远}})&#x3D;0$$
-
-$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{4}{9}\cdot 0 + \frac{2}{9}\cdot 1 + \frac{3}{9}\cdot 0&#x3D; 0.2222$$$$\boxed{\mathrm{Gain}(D,\text{距离}) &#x3D; 0.9911 - 0.2222 &#x3D; 0.7689}$$
-根节点选择：距离（信息增益最大）。
-
-距离＝近 → 纯“是” → 是；
-距离＝远 → 纯“否” → 否；
-距离＝中 → ${4:\text{否},7:\text{是}}$ 各一，可直接多数表决为“是”。
-
-
-2) 题二：连续特征 + 离散特征目标变量：是否购买保险（是&#x2F;否），共 8 条。
-
-
-
-序号
-年龄
-是否有车
-购保
-
-
-
-1
-25
-否
-否
-
-
-2
-30
-是
-是
-
-
-3
-35
-否
-否
-
-
-4
-40
-是
-是
-
-
-5
-45
-否
-是
-
-
-6
-50
-是
-是
-
-
-7
-55
-否
-是
-
-
-8
-60
-是
-是
-
-
-2.0 数据集熵总体正例 6、反例 2：$$\begin{aligned}\mathrm{Ent}(D)&amp;&#x3D; -\frac{6}{8}\log_2\frac{6}{8} - \frac{2}{8}\log_2\frac{2}{8} \&amp;&#x3D; 0.8113\end{aligned}$$
-2.1 连续特征「年龄」阈值枚举排序值：25, 30, 35, 40, 45, 50, 55, 60，对应候选中点$\theta \in {27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5}$。逐一计算：
-
-$\theta&#x3D;27.5$$$\mathrm{Ent}(L) &#x3D; 0,\quad\mathrm{Ent}(R) &#x3D; -\frac{6}{7}\log_2\frac{6}{7}-\frac{1}{7}\log_2\frac{1}{7}&#x3D;0.5917$$$$\mathrm{Gain}(D,27.5) &#x3D; 0.8113 - \frac{1}{8}\cdot 0 - \frac{7}{8}\cdot 0.5917 &#x3D; \boxed{0.2936}$$
-
-$\theta&#x3D;32.5$$$\mathrm{Ent}(L) &#x3D; 1,\quad\mathrm{Ent}(R) &#x3D; -\frac{5}{6}\log_2\frac{5}{6}-\frac{1}{6}\log_2\frac{1}{6}&#x3D;0.6500$$$$\mathrm{Gain}(D,32.5) &#x3D; 0.8113 - \frac{2}{8}\cdot 1 - \frac{6}{8}\cdot 0.6500 &#x3D; \boxed{0.0738}$$
-
-$\theta&#x3D;37.5$$$\mathrm{Ent}(L) &#x3D; -\frac{1}{3}\log_2\frac{1}{3}-\frac{2}{3}\log_2\frac{2}{3}&#x3D;0.9183,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,37.5) &#x3D; 0.8113 - \frac{3}{8}\cdot 0.9183 - \frac{5}{8}\cdot 0 &#x3D; \boxed{0.4669}$$
-
-$\theta&#x3D;42.5$$$\mathrm{Ent}(L) &#x3D; 1,\quad \mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,42.5) &#x3D; 0.8113 - \frac{4}{8}\cdot 1 - \frac{4}{8}\cdot 0 &#x3D; \boxed{0.3113}$$
-
-$\theta&#x3D;47.5$$$\mathrm{Ent}(L) &#x3D; -\frac{3}{5}\log_2\frac{3}{5}-\frac{2}{5}\log_2\frac{2}{5}&#x3D;0.9710,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,47.5) &#x3D; 0.8113 - \frac{5}{8}\cdot 0.9710 - \frac{3}{8}\cdot 0 &#x3D; \boxed{0.2044}$$
-
-$\theta&#x3D;52.5$$$\mathrm{Ent}(L) &#x3D; -\frac{4}{6}\log_2\frac{4}{6}-\frac{2}{6}\log_2\frac{2}{6}&#x3D;0.9183,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,52.5) &#x3D; 0.8113 - \frac{6}{8}\cdot 0.9183 - \frac{2}{8}\cdot 0 &#x3D; \boxed{0.1226}$$
-
-$\theta&#x3D;57.5$$$\mathrm{Ent}(L) &#x3D; -\frac{5}{7}\log_2\frac{5}{7}-\frac{2}{7}\log_2\frac{2}{7}&#x3D;0.8631,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,57.5) &#x3D; 0.8113 - \frac{7}{8}\cdot 0.8631 - \frac{1}{8}\cdot 0 &#x3D; \boxed{0.0560}$$
-
-
-最大信息增益出现在 $\boxed{\theta^* &#x3D; 37.5}$（0.4669）。
-2.2 特征「是否有车」
-有车：${2,4,6,8}$（全为“是”）$$\mathrm{Ent}(D_{\text{是}}) &#x3D; 0$$
-无车：${1,3,5,7}$（2 是 &#x2F; 2 否）$$\mathrm{Ent}(D_{\text{否}}) &#x3D; 1$$
-
-$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{4}{8}\cdot 0 + \frac{4}{8}\cdot 1&#x3D; 0.5$$$$\boxed{\mathrm{Gain}(D,\text{有车}) &#x3D; 0.8113 - 0.5 &#x3D; 0.3113}$$
-根节点选择：先按年龄 $\le 37.5$ 划分。得到的决策规则：
-
-年龄 $&gt; 37.5$ ⇒ 纯“是” ⇒ 购买；
-年龄 $\le 37.5$ ⇒ 再看是否有车：有车 ⇒ 购买；无车 ⇒ 不购买。
-
-
-3. 写作与复习提示
-先写出 $\mathrm{Ent}(D)$ 的原式、代入分数，再给小数值。
-每个候选划分都写出 $\mathrm{Ent}(\cdot)$ 的分式表达、加权和以及最终信息增益。
-连续特征必须列出全部相邻中点阈值并逐一计算。
-缺失值：熵忽略缺失样本，加权仍按总体比例。
-
-
-公式与步骤这样展开后，复现课堂计算会更直接。如果需要决策树示意图或 PDF 版本，也可以继续完善文章。
-]]></content>
-      <categories>
-        <category>技术教程</category>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>决策树</tag>
-        <tag>ID3</tag>
-        <tag>信息增益</tag>
-        <tag>数学</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>远程 SSH 使用 Codex：转发本地 Clash 代理到服务器</title>
-    <url>/2025/06/21/%E8%BF%9C%E7%A8%8B%20SSH%20%E4%BD%BF%E7%94%A8%20Codex%EF%BC%9A%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0%20Clash%20%E4%BB%A3%E7%90%86%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[🧭 一步一步：让远程服务器通过本地 Clash 科学上网 + 复制认证文件
-适用于任何 Ubuntu &#x2F; Debian &#x2F; 其他 Linux 服务器，通过本地 Clash 代理实现科学上网，同时完成 .codex/auth.json 等认证文件的复制。
-
-0️⃣ 前置准备：确认本地代理正常先确保你本地的 Clash 能联网。在本地电脑终端执行：
-curl -x http://127.0.0.1:7897 -I https://www.google.com
-
-若返回 HTTP/2 200 或 301 / 308，说明代理可用 ✅
-
-Clash 默认端口：
-
-HTTP(S)：7897
-SOCKS5：7898可在 Clash Dashboard 查看端口。
-
-
-1️⃣ 建立 SSH 反向代理隧道关键步骤：让远程服务器“反向”访问你本地的代理。在本地电脑执行：
-ssh -p &lt;服务器端口&gt; \    -R 7897:127.0.0.1:7897 \    -o ServerAliveInterval=60 \    root@&lt;服务器地址&gt;
-
-示例：
-ssh -p 30065 -R 7897:127.0.0.1:7897 -o ServerAliveInterval=60 root@connect.westc.gpuhub.com
-
-
-
-
-参数
-含义
-
-
-
--R 7897:127.0.0.1:7897
-把远程的 127.0.0.1:7897 转发到本地 Clash 代理端口
-
-
-ServerAliveInterval=60
-每 60 秒发一次心跳，防止断连
-
-
--p
-SSH 端口号
-
-
-
-保持此连接不要断，它就是“桥梁”。如果想后台运行，可配合 autossh 实现自动重连。
-
-2️⃣ 在远程服务器上设置代理环境变量2.1 临时设置（当前会话生效）在远程终端执行：
-export http_proxy=&quot;http://127.0.0.1:7897&quot;export https_proxy=&quot;http://127.0.0.1:7897&quot;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;
-
-测试：
-curl -I https://chat.openai.comcurl -I https://www.google.com
-
-如返回 200 &#x2F; 30x 响应，即代理生效 ✅
-2.2 永久生效（登录自动加载）将上述环境变量追加到 shell 配置文件。
-bashecho &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.bashrcsource ~/.bashrc
-
-zshecho &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.zshrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.zshrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.zshrcsource ~/.zshrc
-
-3️⃣ 测试代理是否生效在远程服务器执行：
-curl -I https://www.google.comcurl -I https://chat.openai.com
-
-若输出包含 HTTP/1.1 200 Connection established 或 HTTP/2 200，说明代理成功。
-其他命令测试示例：
-pip install requestsapt updategit clone https://github.com/openai/openai-cookbook.git
-
-4️⃣ 复制 .codex/auth.json（或其他认证文件）若远程服务器需要访问 ChatGPT &#x2F; Codex 等服务，需要同步认证文件。
-假设本机路径为 ~/.codex/auth.json：
-拷贝整个 .codex 文件夹scp -P &lt;服务器端口&gt; -r ~/.codex root@&lt;服务器地址&gt;:~
-
-示例：
-scp -P 30065 -r ~/.codex root@connect.westc.gpuhub.com:~
-
-或仅拷贝 auth.jsonssh -p &lt;服务器端口&gt; root@&lt;服务器地址&gt; &quot;mkdir -p ~/.codex&quot;scp -P &lt;服务器端口&gt; ~/.codex/auth.json root@&lt;服务器地址&gt;:~/.codex/
-
-远程服务器确认ls -la ~/.codexchmod 700 ~/.codexchmod 600 ~/.codex/auth.json
-
-5️⃣ VS Code Remote SSH 自动化配置（推荐）在本地编辑 ~/.ssh/config：
-nano ~/.ssh/config
-
-添加配置：
-Host myserver    HostName &lt;服务器地址&gt;    Port &lt;端口号&gt;    User root    RemoteForward 7897 127.0.0.1:7897    ServerAliveInterval 60
-
-示例：
-Host gpuhub-westc    HostName connect.westc.gpuhub.com    Port 30065    User root    RemoteForward 7897 127.0.0.1:7897    ServerAliveInterval 60
-
-之后在 VS Code 选择 gpuhub-westc 连接即可自动建立代理隧道。
-6️⃣ 验证代理端口监听状态在远程执行：
-ss -lnpt | grep 7897# 或netstat -lnpt 2&gt;/dev/null | grep 7897
-
-出现如下输出代表 SSH 已成功建立反向转发：
-LISTEN  0  128 127.0.0.1:7897  *:*  users:((&quot;sshd&quot;,pid=xxx,fd=3))
-
-7️⃣ 常见问题排查
-
-
-问题
-原因
-解决方案
-
-
-
-Connection refused
-本地 Clash 未运行或端口不匹配
-检查本地代理状态与端口号
-
-
-curl 卡住或超时
-SSH 隧道断开
-保持连接或使用 autossh 自动重连
-
-
-.codex 权限错误
-认证文件权限过宽被拒
-执行 chmod 600 ~/.codex/auth.json
-
-
-apt &#x2F; git &#x2F; pip 仍不走代理
-未继承环境变量
-在各自配置文件中单独设置代理
-
-
-8️⃣ 一键命令模板（通用换主机）替换以下变量即可复用：
-
-PORT → SSH 端口
-HOST → 服务器地址
-
-# 本地建立隧道ssh -p PORT -R 7897:127.0.0.1:7897 -o ServerAliveInterval=60 root@HOST# 远程设置环境变量echo &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.bashrcsource ~/.bashrc# 拷贝认证scp -P PORT -r ~/.codex root@HOST:~
-
-
-🎉 完成！你现在拥有：
-
-远程服务器的网络流量走本地 Clash 代理
-.codex/auth.json 等认证文件安全同步
-VS Code Remote SSH 自动转发配置
-可快速迁移到任意新服务器的标准流程
-
-随时换服务器、换端口、换账号，只需跟着本文操作即可。
-]]></content>
-      <categories>
-        <category>技术教程</category>
-        <category>网络配置</category>
-      </categories>
-      <tags>
-        <tag>教程</tag>
-        <tag>Clash</tag>
-        <tag>SSH</tag>
-        <tag>Linux</tag>
-        <tag>代理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>中文说唱分享（PART I）</title>
-    <url>/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/</url>
-    <content><![CDATA[
-
-一、华云龙 KLE1.《山东王 Freestyle》
-  
-
-
-2. 《枣庄一夜》
-  
-
-
-3. 《底层特律》
-  
-
-
-4. 《天下谁人不识君》
-  
-
-
-
-
-二、Echo 王耍大1.《关关难》
-  
-
-
-2.《不可能》
-  
-
-
-3.《害哈（feat.派克特）》
-  
-
-
-三、艾志恒 Asen1.《芳草地》
-  
-
-
-2.《Money Focused Freestyle》
-  
-
-]]></content>
-      <categories>
-        <category>生活分享</category>
-        <category>音乐推荐</category>
-      </categories>
-      <tags>
-        <tag>中文说唱</tag>
-        <tag>音乐分享</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python数据分析判断题整理</title>
     <url>/2025/06/20/Python%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%88%A4%E6%96%AD%E9%A2%98%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[
@@ -3492,6 +3074,424 @@ VS Code Remote SSH 自动转发配置
       </categories>
       <tags>
         <tag>考试复习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用 ID3（信息增益）手算两道题：缺失值 + 连续特征</title>
+    <url>/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/</url>
+    <content><![CDATA[用 ID3（信息增益）手算两道题：缺失值 + 连续特征这篇笔记把课堂两道练习题按 ID3 的信息增益法完整手算一遍，并把用到的公式、处理缺失值与连续特征的做法先讲清楚。熵一律用 $\log_2$。
+
+0. 算法与公式数值全部保留 4 位小数；所有对数底为 2。
+0.1 熵（Entropy）二分类数据集 $S$ 中，正例比例为 $p$、反例为 $1-p$：$$\mathrm{Ent}(S)&#x3D; -\sum_{c\in{+,-}} p_c \log_2 p_c&#x3D; -p\log_2 p - (1-p)\log_2(1-p)$$
+0.2 信息增益（Information Gain）离散特征 $A$ 取值集合为 $\mathcal{V}$，划分后子集为 $S_v$：$$\begin{aligned}\mathrm{Gain}(S,A)&amp;&#x3D; \mathrm{Ent}(S) \&amp;\quad - \sum_{v\in\mathcal{V}} \frac{|S_v|}{|S|},\mathrm{Ent}(S_v)\end{aligned}$$
+0.3 连续特征阈值连续特征按数值升序，取相邻中点为候选 $\theta$。划分 $L&#x3D;{x\le\theta},R&#x3D;{x&gt;\theta}$：$$\begin{aligned}\mathrm{Gain}(S,\theta)&amp;&#x3D; \mathrm{Ent}(S) \&amp;\quad - \frac{|L|}{|S|}\mathrm{Ent}(L)     - \frac{|R|}{|S|}\mathrm{Ent}(R)\end{aligned}$$
+0.4 缺失值处理特征 $A$ 的缺失样本（记为“？”）不参与熵计算；但在信息增益加权时，依旧按照 $\tfrac{|S_v|}{|S|}$ 使用其在原集合中的占比。这与课堂的写法一致。
+
+1) 题一：离散特征 + 缺失值目标变量：是否去健身房（是&#x2F;否），共 9 条。
+
+
+
+序号
+天气
+是否有课
+距离
+是否去健身房
+
+
+
+1
+晴
+有
+近
+是
+
+
+2
+晴
+无
+远
+否
+
+
+3
+雨
+?
+近
+是
+
+
+4
+阴
+有
+中
+否
+
+
+5
+晴
+无
+近
+是
+
+
+6
+雨
+无
+远
+否
+
+
+7
+阴
+?
+中
+是
+
+
+8
+雨
+有
+近
+是
+
+
+9
+阴
+无
+远
+否
+
+
+1.0 数据集熵总体正例 5、反例 4：$$\begin{aligned}\mathrm{Ent}(D)&amp;&#x3D; -\frac{5}{9}\log_2\frac{5}{9} - \frac{4}{9}\log_2\frac{4}{9} \&amp;&#x3D; 0.9911\end{aligned}$$
+1.1 特征「是否有课」
+有：${1,4,8}$（2 是 &#x2F; 1 否）$$\mathrm{Ent}(D_{\text{有}})&#x3D; -\frac{2}{3}\log_2\frac{2}{3} - \frac{1}{3}\log_2\frac{1}{3}&#x3D; 0.9183$$
+无：${2,5,6,9}$（1 是 &#x2F; 3 否）$$\mathrm{Ent}(D_{\text{无}})&#x3D; -\frac{1}{4}\log_2\frac{1}{4} - \frac{3}{4}\log_2\frac{3}{4}&#x3D; 0.8113$$
+
+缺失样本两条忽略于熵，但加权仍按 $\tfrac{3}{9}$ 与 $\tfrac{4}{9}$：$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{3}{9}\cdot 0.9183 + \frac{4}{9}\cdot 0.8113&#x3D; 0.6667$$$$\boxed{\mathrm{Gain}(D,\text{有课}) &#x3D; 0.9911 - 0.6667 &#x3D; 0.3244}$$
+1.2 特征「天气」三种天气的熵完全相同：$$\mathrm{Ent}(D_{\text{晴}})&#x3D;\mathrm{Ent}(D_{\text{阴}})&#x3D;\mathrm{Ent}(D_{\text{雨}})&#x3D;0.9183$$$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{3}{9}\cdot 0.9183 \times 3&#x3D; 0.9183$$$$\boxed{\mathrm{Gain}(D,\text{天气}) &#x3D; 0.9911 - 0.9183 &#x3D; 0.0728}$$
+1.3 特征「距离」
+近：${1,3,5,8}$（4&#x2F;0）$$\mathrm{Ent}(D_{\text{近}})&#x3D;0$$
+中：${4,7}$（1&#x2F;1）$$\mathrm{Ent}(D_{\text{中}})&#x3D; -\tfrac{1}{2}\log_2\tfrac{1}{2}-\tfrac{1}{2}\log_2\tfrac{1}{2}&#x3D;1$$
+远：${2,6,9}$（0&#x2F;3）$$\mathrm{Ent}(D_{\text{远}})&#x3D;0$$
+
+$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{4}{9}\cdot 0 + \frac{2}{9}\cdot 1 + \frac{3}{9}\cdot 0&#x3D; 0.2222$$$$\boxed{\mathrm{Gain}(D,\text{距离}) &#x3D; 0.9911 - 0.2222 &#x3D; 0.7689}$$
+根节点选择：距离（信息增益最大）。
+
+距离＝近 → 纯“是” → 是；
+距离＝远 → 纯“否” → 否；
+距离＝中 → ${4:\text{否},7:\text{是}}$ 各一，可直接多数表决为“是”。
+
+
+2) 题二：连续特征 + 离散特征目标变量：是否购买保险（是&#x2F;否），共 8 条。
+
+
+
+序号
+年龄
+是否有车
+购保
+
+
+
+1
+25
+否
+否
+
+
+2
+30
+是
+是
+
+
+3
+35
+否
+否
+
+
+4
+40
+是
+是
+
+
+5
+45
+否
+是
+
+
+6
+50
+是
+是
+
+
+7
+55
+否
+是
+
+
+8
+60
+是
+是
+
+
+2.0 数据集熵总体正例 6、反例 2：$$\begin{aligned}\mathrm{Ent}(D)&amp;&#x3D; -\frac{6}{8}\log_2\frac{6}{8} - \frac{2}{8}\log_2\frac{2}{8} \&amp;&#x3D; 0.8113\end{aligned}$$
+2.1 连续特征「年龄」阈值枚举排序值：25, 30, 35, 40, 45, 50, 55, 60，对应候选中点$\theta \in {27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5}$。逐一计算：
+
+$\theta&#x3D;27.5$$$\mathrm{Ent}(L) &#x3D; 0,\quad\mathrm{Ent}(R) &#x3D; -\frac{6}{7}\log_2\frac{6}{7}-\frac{1}{7}\log_2\frac{1}{7}&#x3D;0.5917$$$$\mathrm{Gain}(D,27.5) &#x3D; 0.8113 - \frac{1}{8}\cdot 0 - \frac{7}{8}\cdot 0.5917 &#x3D; \boxed{0.2936}$$
+
+$\theta&#x3D;32.5$$$\mathrm{Ent}(L) &#x3D; 1,\quad\mathrm{Ent}(R) &#x3D; -\frac{5}{6}\log_2\frac{5}{6}-\frac{1}{6}\log_2\frac{1}{6}&#x3D;0.6500$$$$\mathrm{Gain}(D,32.5) &#x3D; 0.8113 - \frac{2}{8}\cdot 1 - \frac{6}{8}\cdot 0.6500 &#x3D; \boxed{0.0738}$$
+
+$\theta&#x3D;37.5$$$\mathrm{Ent}(L) &#x3D; -\frac{1}{3}\log_2\frac{1}{3}-\frac{2}{3}\log_2\frac{2}{3}&#x3D;0.9183,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,37.5) &#x3D; 0.8113 - \frac{3}{8}\cdot 0.9183 - \frac{5}{8}\cdot 0 &#x3D; \boxed{0.4669}$$
+
+$\theta&#x3D;42.5$$$\mathrm{Ent}(L) &#x3D; 1,\quad \mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,42.5) &#x3D; 0.8113 - \frac{4}{8}\cdot 1 - \frac{4}{8}\cdot 0 &#x3D; \boxed{0.3113}$$
+
+$\theta&#x3D;47.5$$$\mathrm{Ent}(L) &#x3D; -\frac{3}{5}\log_2\frac{3}{5}-\frac{2}{5}\log_2\frac{2}{5}&#x3D;0.9710,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,47.5) &#x3D; 0.8113 - \frac{5}{8}\cdot 0.9710 - \frac{3}{8}\cdot 0 &#x3D; \boxed{0.2044}$$
+
+$\theta&#x3D;52.5$$$\mathrm{Ent}(L) &#x3D; -\frac{4}{6}\log_2\frac{4}{6}-\frac{2}{6}\log_2\frac{2}{6}&#x3D;0.9183,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,52.5) &#x3D; 0.8113 - \frac{6}{8}\cdot 0.9183 - \frac{2}{8}\cdot 0 &#x3D; \boxed{0.1226}$$
+
+$\theta&#x3D;57.5$$$\mathrm{Ent}(L) &#x3D; -\frac{5}{7}\log_2\frac{5}{7}-\frac{2}{7}\log_2\frac{2}{7}&#x3D;0.8631,\quad\mathrm{Ent}(R) &#x3D; 0$$$$\mathrm{Gain}(D,57.5) &#x3D; 0.8113 - \frac{7}{8}\cdot 0.8631 - \frac{1}{8}\cdot 0 &#x3D; \boxed{0.0560}$$
+
+
+最大信息增益出现在 $\boxed{\theta^* &#x3D; 37.5}$（0.4669）。
+2.2 特征「是否有车」
+有车：${2,4,6,8}$（全为“是”）$$\mathrm{Ent}(D_{\text{是}}) &#x3D; 0$$
+无车：${1,3,5,7}$（2 是 &#x2F; 2 否）$$\mathrm{Ent}(D_{\text{否}}) &#x3D; 1$$
+
+$$\sum_v \frac{|D_v|}{|D|}\mathrm{Ent}(D_v)&#x3D; \frac{4}{8}\cdot 0 + \frac{4}{8}\cdot 1&#x3D; 0.5$$$$\boxed{\mathrm{Gain}(D,\text{有车}) &#x3D; 0.8113 - 0.5 &#x3D; 0.3113}$$
+根节点选择：先按年龄 $\le 37.5$ 划分。得到的决策规则：
+
+年龄 $&gt; 37.5$ ⇒ 纯“是” ⇒ 购买；
+年龄 $\le 37.5$ ⇒ 再看是否有车：有车 ⇒ 购买；无车 ⇒ 不购买。
+
+
+3. 写作与复习提示
+先写出 $\mathrm{Ent}(D)$ 的原式、代入分数，再给小数值。
+每个候选划分都写出 $\mathrm{Ent}(\cdot)$ 的分式表达、加权和以及最终信息增益。
+连续特征必须列出全部相邻中点阈值并逐一计算。
+缺失值：熵忽略缺失样本，加权仍按总体比例。
+
+
+公式与步骤这样展开后，复现课堂计算会更直接。如果需要决策树示意图或 PDF 版本，也可以继续完善文章。
+]]></content>
+      <categories>
+        <category>技术教程</category>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>决策树</tag>
+        <tag>ID3</tag>
+        <tag>信息增益</tag>
+        <tag>数学</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中文说唱分享（PART I）</title>
+    <url>/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/</url>
+    <content><![CDATA[
+
+一、华云龙 KLE1.《山东王 Freestyle》
+  
+
+
+2. 《枣庄一夜》
+  
+
+
+3. 《底层特律》
+  
+
+
+4. 《天下谁人不识君》
+  
+
+
+
+
+二、Echo 王耍大1.《关关难》
+  
+
+
+2.《不可能》
+  
+
+
+3.《害哈（feat.派克特）》
+  
+
+
+三、艾志恒 Asen1.《芳草地》
+  
+
+
+2.《Money Focused Freestyle》
+  
+
+]]></content>
+      <categories>
+        <category>生活分享</category>
+        <category>音乐推荐</category>
+      </categories>
+      <tags>
+        <tag>中文说唱</tag>
+        <tag>音乐分享</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>远程 SSH 使用 Codex：转发本地 Clash 代理到服务器</title>
+    <url>/2025/06/21/%E8%BF%9C%E7%A8%8B%20SSH%20%E4%BD%BF%E7%94%A8%20Codex%EF%BC%9A%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0%20Clash%20%E4%BB%A3%E7%90%86%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[🧭 一步一步：让远程服务器通过本地 Clash 科学上网 + 复制认证文件
+适用于任何 Ubuntu &#x2F; Debian &#x2F; 其他 Linux 服务器，通过本地 Clash 代理实现科学上网，同时完成 .codex/auth.json 等认证文件的复制。
+
+0️⃣ 前置准备：确认本地代理正常先确保你本地的 Clash 能联网。在本地电脑终端执行：
+curl -x http://127.0.0.1:7897 -I https://www.google.com
+
+若返回 HTTP/2 200 或 301 / 308，说明代理可用 ✅
+
+Clash 默认端口：
+
+HTTP(S)：7897
+SOCKS5：7898可在 Clash Dashboard 查看端口。
+
+
+1️⃣ 建立 SSH 反向代理隧道关键步骤：让远程服务器“反向”访问你本地的代理。在本地电脑执行：
+ssh -p &lt;服务器端口&gt; \    -R 7897:127.0.0.1:7897 \    -o ServerAliveInterval=60 \    root@&lt;服务器地址&gt;
+
+示例：
+ssh -p 30065 -R 7897:127.0.0.1:7897 -o ServerAliveInterval=60 root@connect.westc.gpuhub.com
+
+
+
+
+参数
+含义
+
+
+
+-R 7897:127.0.0.1:7897
+把远程的 127.0.0.1:7897 转发到本地 Clash 代理端口
+
+
+ServerAliveInterval=60
+每 60 秒发一次心跳，防止断连
+
+
+-p
+SSH 端口号
+
+
+
+保持此连接不要断，它就是“桥梁”。如果想后台运行，可配合 autossh 实现自动重连。
+
+2️⃣ 在远程服务器上设置代理环境变量2.1 临时设置（当前会话生效）在远程终端执行：
+export http_proxy=&quot;http://127.0.0.1:7897&quot;export https_proxy=&quot;http://127.0.0.1:7897&quot;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;
+
+测试：
+curl -I https://chat.openai.comcurl -I https://www.google.com
+
+如返回 200 &#x2F; 30x 响应，即代理生效 ✅
+2.2 永久生效（登录自动加载）将上述环境变量追加到 shell 配置文件。
+bashecho &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.bashrcsource ~/.bashrc
+
+zshecho &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.zshrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.zshrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.zshrcsource ~/.zshrc
+
+3️⃣ 测试代理是否生效在远程服务器执行：
+curl -I https://www.google.comcurl -I https://chat.openai.com
+
+若输出包含 HTTP/1.1 200 Connection established 或 HTTP/2 200，说明代理成功。
+其他命令测试示例：
+pip install requestsapt updategit clone https://github.com/openai/openai-cookbook.git
+
+4️⃣ 复制 .codex/auth.json（或其他认证文件）若远程服务器需要访问 ChatGPT &#x2F; Codex 等服务，需要同步认证文件。
+假设本机路径为 ~/.codex/auth.json：
+拷贝整个 .codex 文件夹scp -P &lt;服务器端口&gt; -r ~/.codex root@&lt;服务器地址&gt;:~
+
+示例：
+scp -P 30065 -r ~/.codex root@connect.westc.gpuhub.com:~
+
+或仅拷贝 auth.jsonssh -p &lt;服务器端口&gt; root@&lt;服务器地址&gt; &quot;mkdir -p ~/.codex&quot;scp -P &lt;服务器端口&gt; ~/.codex/auth.json root@&lt;服务器地址&gt;:~/.codex/
+
+远程服务器确认ls -la ~/.codexchmod 700 ~/.codexchmod 600 ~/.codex/auth.json
+
+5️⃣ VS Code Remote SSH 自动化配置（推荐）在本地编辑 ~/.ssh/config：
+nano ~/.ssh/config
+
+添加配置：
+Host myserver    HostName &lt;服务器地址&gt;    Port &lt;端口号&gt;    User root    RemoteForward 7897 127.0.0.1:7897    ServerAliveInterval 60
+
+示例：
+Host gpuhub-westc    HostName connect.westc.gpuhub.com    Port 30065    User root    RemoteForward 7897 127.0.0.1:7897    ServerAliveInterval 60
+
+之后在 VS Code 选择 gpuhub-westc 连接即可自动建立代理隧道。
+6️⃣ 验证代理端口监听状态在远程执行：
+ss -lnpt | grep 7897# 或netstat -lnpt 2&gt;/dev/null | grep 7897
+
+出现如下输出代表 SSH 已成功建立反向转发：
+LISTEN  0  128 127.0.0.1:7897  *:*  users:((&quot;sshd&quot;,pid=xxx,fd=3))
+
+7️⃣ 常见问题排查
+
+
+问题
+原因
+解决方案
+
+
+
+Connection refused
+本地 Clash 未运行或端口不匹配
+检查本地代理状态与端口号
+
+
+curl 卡住或超时
+SSH 隧道断开
+保持连接或使用 autossh 自动重连
+
+
+.codex 权限错误
+认证文件权限过宽被拒
+执行 chmod 600 ~/.codex/auth.json
+
+
+apt &#x2F; git &#x2F; pip 仍不走代理
+未继承环境变量
+在各自配置文件中单独设置代理
+
+
+8️⃣ 一键命令模板（通用换主机）替换以下变量即可复用：
+
+PORT → SSH 端口
+HOST → 服务器地址
+
+# 本地建立隧道ssh -p PORT -R 7897:127.0.0.1:7897 -o ServerAliveInterval=60 root@HOST# 远程设置环境变量echo &#x27;export http_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export https_proxy=&quot;http://127.0.0.1:7897&quot;&#x27; &gt;&gt; ~/.bashrcecho &#x27;export no_proxy=&quot;localhost,127.0.0.1,.local&quot;&#x27; &gt;&gt; ~/.bashrcsource ~/.bashrc# 拷贝认证scp -P PORT -r ~/.codex root@HOST:~
+
+
+🎉 完成！你现在拥有：
+
+远程服务器的网络流量走本地 Clash 代理
+.codex/auth.json 等认证文件安全同步
+VS Code Remote SSH 自动转发配置
+可快速迁移到任意新服务器的标准流程
+
+随时换服务器、换端口、换账号，只需跟着本文操作即可。
+]]></content>
+      <categories>
+        <category>技术教程</category>
+        <category>网络配置</category>
+      </categories>
+      <tags>
+        <tag>教程</tag>
+        <tag>Clash</tag>
+        <tag>SSH</tag>
+        <tag>Linux</tag>
+        <tag>代理</tag>
       </tags>
   </entry>
   <entry>
