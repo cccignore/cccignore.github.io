@@ -1,0 +1,128 @@
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="githubGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#24292e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#586069;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="deployGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#28a745;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22863a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0366d6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005cc5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f6f8fa" stroke="#e1e4e8" stroke-width="2" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" fill="#24292e" font-family="Arial, sans-serif" font-size="18" font-weight="bold">GitHub Pages 部署流程</text>
+  
+  <!-- Step 1: Local Development -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="150" height="100" fill="#fff" stroke="#e1e4e8" stroke-width="2" rx="8"/>
+    <text x="75" y="20" text-anchor="middle" fill="#24292e" font-family="Arial, sans-serif" font-size="14" font-weight="bold">本地开发</text>
+    
+    <!-- Computer icon -->
+    <rect x="30" y="30" width="90" height="50" fill="#f1f3f4" stroke="#d1d5da" stroke-width="1" rx="4"/>
+    <rect x="35" y="35" width="80" height="35" fill="#24292e" rx="2"/>
+    <rect x="65" y="82" width="20" height="8" fill="#d1d5da" rx="4"/>
+    
+    <text x="75" y="95" text-anchor="middle" fill="#586069" font-family="SF Mono, Monaco, monospace" font-size="10">hexo generate</text>
+  </g>
+  
+  <!-- Arrow 1 -->
+  <path d="M220 130 L280 130 M270 120 L280 130 L270 140" stroke="url(#arrowGradient)" stroke-width="3" fill="none"/>
+  <text x="250" y="125" text-anchor="middle" fill="#0366d6" font-family="Arial, sans-serif" font-size="12">git push</text>
+  
+  <!-- Step 2: GitHub Repository -->
+  <g transform="translate(300, 80)">
+    <rect x="0" y="0" width="150" height="100" fill="url(#githubGradient)" stroke="#24292e" stroke-width="2" rx="8"/>
+    <text x="75" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">GitHub 仓库</text>
+    
+    <!-- GitHub logo -->
+    <circle cx="75" cy="50" r="20" fill="white"/>
+    <path d="M75 35 C67 35 61 41 61 49 C61 55 65 60 70 62 C71 62 71 61 71 60 L71 57 C68 58 67 56 67 56 C66 55 65 55 65 55 C63 56 65 56 65 56 C67 56 68 54 68 54 C69 52 71 53 71 53 C71 53 71 52 71 51 C66 51 61 49 61 49 C61 41 67 35 75 35 C83 35 89 41 89 49 C89 49 84 51 79 51 C79 52 79 53 79 53 C81 53 82 52 82 54 C82 54 83 56 85 56 C85 56 87 56 85 55 C85 55 84 55 83 56 C83 56 82 58 79 57 L79 60 C79 61 79 62 80 62 C85 60 89 55 89 49 C89 41 83 35 75 35 Z" fill="#24292e"/>
+    
+    <text x="75" y="95" text-anchor="middle" fill="white" font-family="SF Mono, Monaco, monospace" font-size="10">username.github.io</text>
+  </g>
+  
+  <!-- Arrow 2 -->
+  <path d="M470 130 L530 130 M520 120 L530 130 L520 140" stroke="url(#arrowGradient)" stroke-width="3" fill="none"/>
+  <text x="500" y="125" text-anchor="middle" fill="#0366d6" font-family="Arial, sans-serif" font-size="12">自动部署</text>
+  
+  <!-- Step 3: GitHub Pages -->
+  <g transform="translate(550, 80)">
+    <rect x="0" y="0" width="150" height="100" fill="url(#deployGradient)" stroke="#28a745" stroke-width="2" rx="8"/>
+    <text x="75" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">GitHub Pages</text>
+    
+    <!-- Globe icon -->
+    <circle cx="75" cy="50" r="18" fill="none" stroke="white" stroke-width="2"/>
+    <path d="M57 50 Q75 35 93 50 Q75 65 57 50" fill="none" stroke="white" stroke-width="1.5"/>
+    <path d="M75 32 L75 68" stroke="white" stroke-width="1.5"/>
+    <path d="M60 40 L90 40 M60 50 L90 50 M60 60 L90 60" stroke="white" stroke-width="1"/>
+    
+    <text x="75" y="95" text-anchor="middle" fill="white" font-family="SF Mono, Monaco, monospace" font-size="10">在线访问</text>
+  </g>
+  
+  <!-- Configuration Steps -->
+  <g transform="translate(50, 220)">
+    <rect x="0" y="0" width="700" height="250" fill="#fff" stroke="#e1e4e8" stroke-width="2" rx="8"/>
+    <text x="350" y="25" text-anchor="middle" fill="#24292e" font-family="Arial, sans-serif" font-size="16" font-weight="bold">配置步骤详解</text>
+    
+    <!-- Step numbers and descriptions -->
+    <g transform="translate(30, 50)">
+      <!-- Step 1 -->
+      <circle cx="15" cy="15" r="12" fill="#0366d6"/>
+      <text x="15" y="20" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">1</text>
+      <text x="40" y="20" fill="#24292e" font-family="Arial, sans-serif" font-size="14" font-weight="bold">创建 GitHub 仓库</text>
+      <text x="40" y="40" fill="#586069" font-family="Arial, sans-serif" font-size="12">仓库名必须为: username.github.io</text>
+      
+      <!-- Step 2 -->
+      <circle cx="15" cy="70" r="12" fill="#0366d6"/>
+      <text x="15" y="75" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">2</text>
+      <text x="40" y="75" fill="#24292e" font-family="Arial, sans-serif" font-size="14" font-weight="bold">配置 _config.yml</text>
+      <text x="40" y="95" fill="#586069" font-family="Arial, sans-serif" font-size="12">设置 deploy 参数和 URL</text>
+      
+      <!-- Step 3 -->
+      <circle cx="15" cy="125" r="12" fill="#0366d6"/>
+      <text x="15" y="130" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">3</text>
+      <text x="40" y="130" fill="#24292e" font-family="Arial, sans-serif" font-size="14" font-weight="bold">安装部署插件</text>
+      <text x="40" y="150" fill="#586069" font-family="Arial, sans-serif" font-size="12">npm install hexo-deployer-git --save</text>
+      
+      <!-- Step 4 -->
+      <circle cx="15" cy="180" r="12" fill="#0366d6"/>
+      <text x="15" y="185" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">4</text>
+      <text x="40" y="185" fill="#24292e" font-family="Arial, sans-serif" font-size="14" font-weight="bold">部署到 GitHub</text>
+      <text x="40" y="205" fill="#586069" font-family="Arial, sans-serif" font-size="12">hexo clean && hexo deploy</text>
+    </g>
+    
+    <!-- Code example -->
+    <g transform="translate(350, 50)">
+      <rect x="0" y="0" width="320" height="180" fill="#f6f8fa" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+      <text x="10" y="20" fill="#24292e" font-family="SF Mono, Monaco, monospace" font-size="12" font-weight="bold">_config.yml 配置示例:</text>
+      
+      <text x="10" y="40" fill="#d73a49" font-family="SF Mono, Monaco, monospace" font-size="11"># URL</text>
+      <text x="10" y="55" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="11">url:</text>
+      <text x="40" y="55" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">https://username.github.io</text>
+      
+      <text x="10" y="80" fill="#d73a49" font-family="SF Mono, Monaco, monospace" font-size="11"># Deployment</text>
+      <text x="10" y="95" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="11">deploy:</text>
+      <text x="10" y="110" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="11">  type:</text>
+      <text x="60" y="110" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">git</text>
+      <text x="10" y="125" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="11">  repo:</text>
+      <text x="60" y="125" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">git@github.com:username/</text>
+      <text x="60" y="140" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">username.github.io.git</text>
+      <text x="10" y="155" fill="#005cc5" font-family="SF Mono, Monaco, monospace" font-size="11">  branch:</text>
+      <text x="80" y="155" fill="#032f62" font-family="SF Mono, Monaco, monospace" font-size="11">main</text>
+    </g>
+  </g>
+  
+  <!-- Success indicator -->
+  <g transform="translate(720, 40)">
+    <circle cx="0" cy="0" r="15" fill="#28a745"/>
+    <path d="M-8 0 L-3 5 L8 -7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

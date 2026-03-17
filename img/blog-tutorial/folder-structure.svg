@@ -1,0 +1,117 @@
+<svg width="500" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd93d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff9500;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="fileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e2e8f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="500" height="400" fill="#f7fafc" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+  
+  <!-- Title -->
+  <text x="250" y="25" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Hexo 博客文件夹结构</text>
+  
+  <!-- Root folder -->
+  <g transform="translate(20, 50)">
+    <!-- Folder icon -->
+    <path d="M0 5 L15 5 L20 0 L50 0 L50 25 L0 25 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="60" y="18" fill="#2d3748" font-family="SF Mono, Monaco, monospace" font-size="14" font-weight="bold">myblog/</text>
+  </g>
+  
+  <!-- Level 1 files and folders -->
+  <g transform="translate(40, 80)">
+    <!-- _config.yml -->
+    <rect x="0" y="0" width="12" height="15" fill="url(#fileGradient)" stroke="#a0aec0" stroke-width="1" rx="2"/>
+    <text x="20" y="12" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12">_config.yml</text>
+    
+    <!-- package.json -->
+    <rect x="0" y="25" width="12" height="15" fill="#68d391" stroke="#38a169" stroke-width="1" rx="2"/>
+    <text x="20" y="37" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12">package.json</text>
+    
+    <!-- node_modules folder -->
+    <path d="M0 55 L12 55 L15 50 L35 50 L35 70 L0 70 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="40" y="65" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12">node_modules/</text>
+    
+    <!-- source folder -->
+    <path d="M0 80 L12 80 L15 75 L35 75 L35 95 L0 95 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="40" y="90" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12" font-weight="bold">source/</text>
+    
+    <!-- themes folder -->
+    <path d="M0 105 L12 105 L15 100 L35 100 L35 120 L0 120 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="40" y="115" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12" font-weight="bold">themes/</text>
+    
+    <!-- public folder -->
+    <path d="M0 130 L12 130 L15 125 L35 125 L35 145 L0 145 Z" fill="#90cdf4" stroke="#4299e1" stroke-width="1"/>
+    <text x="40" y="140" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="12">public/</text>
+  </g>
+  
+  <!-- Source folder contents -->
+  <g transform="translate(80, 170)">
+    <text x="0" y="0" fill="#2d3748" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">source/</text>
+    
+    <!-- _posts folder -->
+    <path d="M20 10 L30 10 L32 7 L45 7 L45 22 L20 22 Z" fill="#fbb6ce" stroke="#ed64a6" stroke-width="1"/>
+    <text x="50" y="18" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">_posts/</text>
+    
+    <!-- about folder -->
+    <path d="M20 30 L30 30 L32 27 L45 27 L45 42 L20 42 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="50" y="38" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">about/</text>
+    
+    <!-- tags folder -->
+    <path d="M20 50 L30 50 L32 47 L45 47 L45 62 L20 62 Z" fill="url(#folderGradient)" stroke="#cc7a00" stroke-width="1"/>
+    <text x="50" y="58" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">tags/</text>
+  </g>
+  
+  <!-- Themes folder contents -->
+  <g transform="translate(80, 250)">
+    <text x="0" y="0" fill="#2d3748" font-family="SF Mono, Monaco, monospace" font-size="11" font-weight="bold">themes/</text>
+    
+    <!-- butterfly folder -->
+    <path d="M20 10 L30 10 L32 7 L55 7 L55 22 L20 22 Z" fill="#ff6b9d" stroke="#e53e3e" stroke-width="1"/>
+    <text x="60" y="18" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10" font-weight="bold">butterfly/</text>
+    
+    <!-- landscape folder -->
+    <path d="M20 30 L30 30 L32 27 L55 27 L55 42 L20 42 Z" fill="#68d391" stroke="#38a169" stroke-width="1"/>
+    <text x="60" y="38" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">landscape/</text>
+  </g>
+  
+  <!-- Connection lines -->
+  <g stroke="#cbd5e0" stroke-width="1" fill="none">
+    <!-- Root to level 1 -->
+    <path d="M40 75 L40 155"/>
+    
+    <!-- Level 1 to source -->
+    <path d="M75 90 L80 90 L80 170"/>
+    
+    <!-- Level 1 to themes -->
+    <path d="M75 115 L80 115 L80 250"/>
+    
+    <!-- Source connections -->
+    <path d="M80 170 L80 190"/>
+    <path d="M80 190 L100 190 L100 180"/>
+    <path d="M100 190 L100 200"/>
+    <path d="M100 190 L100 220"/>
+    
+    <!-- Themes connections -->
+    <path d="M80 250 L80 270"/>
+    <path d="M80 270 L100 270 L100 260"/>
+    <path d="M100 270 L100 280"/>
+  </g>
+  
+  <!-- Important files highlight -->
+  <g transform="translate(300, 80)">
+    <rect x="0" y="0" width="180" height="120" fill="#edf2f7" stroke="#cbd5e0" stroke-width="1" rx="4"/>
+    <text x="90" y="15" text-anchor="middle" fill="#2d3748" font-family="Arial, sans-serif" font-size="12" font-weight="bold">重要文件说明</text>
+    
+    <text x="10" y="35" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">_config.yml - 站点配置</text>
+    <text x="10" y="50" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">package.json - 依赖管理</text>
+    <text x="10" y="65" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">source/_posts/ - 文章目录</text>
+    <text x="10" y="80" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">themes/butterfly/ - 主题</text>
+    <text x="10" y="95" fill="#4a5568" font-family="SF Mono, Monaco, monospace" font-size="10">public/ - 生成的静态文件</text>
+  </g>
+</svg>
