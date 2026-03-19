@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">LeetCode Hot100 两数之和封面</title>
+  <desc id="desc">用于题解文章的封面图，包含数组和哈希表元素</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f7f2e7"/>
+      <stop offset="55%" stop-color="#d8ece7"/>
+      <stop offset="100%" stop-color="#bfd6d9"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1f3c44"/>
+      <stop offset="100%" stop-color="#2f6f73"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f3b37a"/>
+      <stop offset="100%" stop-color="#e38b5b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1080" cy="90" r="130" fill="#ffffff" opacity="0.45"/>
+  <circle cx="160" cy="540" r="170" fill="#ffffff" opacity="0.28"/>
+  <rect x="68" y="56" width="220" height="38" rx="19" fill="#ffffff" opacity="0.88"/>
+  <text x="178" y="81" text-anchor="middle" font-size="20" font-family="'Noto Serif SC','PingFang SC',serif" fill="#2f6f73">LeetCode Hot100</text>
+
+  <text x="82" y="190" font-size="64" font-weight="700" font-family="'Noto Serif SC','PingFang SC',serif" fill="#183036">两数之和</text>
+  <text x="82" y="250" font-size="32" font-family="'JetBrains Mono','Fira Code',monospace" fill="#31535a">Two Sum / Hash Map Entry</text>
+  <text x="82" y="314" font-size="26" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">从暴力枚举，到第一次真正理解“补数”思维</text>
+
+  <rect x="82" y="366" width="386" height="160" rx="28" fill="#ffffff" opacity="0.82"/>
+  <text x="112" y="414" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#24474e">这题你会收获：</text>
+  <text x="112" y="455" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">1. 暴力法为什么天然成立</text>
+  <text x="112" y="490" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">2. 哈希表为什么能降到 O(n)</text>
+  <text x="112" y="525" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">3. Python 字典怎么真正用起来</text>
+
+  <rect x="690" y="120" width="410" height="390" rx="34" fill="url(#card)"/>
+  <text x="742" y="180" font-size="24" font-family="'JetBrains Mono','Fira Code',monospace" fill="#dff6f1">nums = [2, 7, 11, 15]</text>
+  <text x="742" y="220" font-size="24" font-family="'JetBrains Mono','Fira Code',monospace" fill="#dff6f1">target = 9</text>
+
+  <rect x="740" y="260" width="62" height="62" rx="14" fill="#fff2cf"/>
+  <rect x="814" y="260" width="62" height="62" rx="14" fill="#fff2cf"/>
+  <rect x="888" y="260" width="70" height="62" rx="14" fill="#fff2cf"/>
+  <rect x="970" y="260" width="70" height="62" rx="14" fill="#fff2cf"/>
+  <text x="771" y="300" text-anchor="middle" font-size="28" font-family="'JetBrains Mono','Fira Code',monospace" fill="#3a3a3a">2</text>
+  <text x="845" y="300" text-anchor="middle" font-size="28" font-family="'JetBrains Mono','Fira Code',monospace" fill="#3a3a3a">7</text>
+  <text x="923" y="300" text-anchor="middle" font-size="28" font-family="'JetBrains Mono','Fira Code',monospace" fill="#3a3a3a">11</text>
+  <text x="1005" y="300" text-anchor="middle" font-size="28" font-family="'JetBrains Mono','Fira Code',monospace" fill="#3a3a3a">15</text>
+
+  <path d="M 770 356 C 830 410, 920 410, 980 356" fill="none" stroke="#f4c28c" stroke-width="8" stroke-linecap="round"/>
+  <text x="876" y="400" text-anchor="middle" font-size="30" font-family="'JetBrains Mono','Fira Code',monospace" fill="#f8d9b7">2 + 7 = 9</text>
+
+  <rect x="788" y="432" width="216" height="52" rx="16" fill="url(#warm)"/>
+  <text x="896" y="466" text-anchor="middle" font-size="26" font-family="'JetBrains Mono','Fira Code',monospace" fill="#ffffff">seen = {2: 0}</text>
+</svg>

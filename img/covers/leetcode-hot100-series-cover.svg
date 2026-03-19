@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">LeetCode Hot100 系列导航封面</title>
+  <desc id="desc">用于 Hot100 导航页的系列封面图</desc>
+  <defs>
+    <linearGradient id="seriesBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8f7f4"/>
+      <stop offset="50%" stop-color="#e7f2ef"/>
+      <stop offset="100%" stop-color="#d3e3e5"/>
+    </linearGradient>
+    <linearGradient id="seriesCard" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#24474e"/>
+      <stop offset="100%" stop-color="#2a9d8f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#seriesBg)"/>
+  <circle cx="1090" cy="118" r="150" fill="#ffffff" opacity="0.5"/>
+  <circle cx="96" cy="566" r="180" fill="#ffffff" opacity="0.35"/>
+
+  <rect x="78" y="62" width="242" height="42" rx="21" fill="#ffffff" opacity="0.92"/>
+  <text x="199" y="89" text-anchor="middle" font-size="20" font-family="'Noto Serif SC','PingFang SC',serif" fill="#2f6f73">LeetCode Hot100 Series</text>
+
+  <text x="82" y="192" font-size="64" font-weight="700" font-family="'Noto Serif SC','PingFang SC',serif" fill="#1d353b">刷题导航</text>
+  <text x="82" y="252" font-size="32" font-family="'JetBrains Mono','Fira Code',monospace" fill="#3b5f66">Topic-first / Python / Review-friendly</text>
+  <text x="82" y="318" font-size="26" font-family="'Noto Serif SC','PingFang SC',serif" fill="#476a70">按专题推进，记录思路、可视化和可复习的题解笔记</text>
+
+  <rect x="82" y="374" width="420" height="150" rx="30" fill="#ffffff" opacity="0.82"/>
+  <text x="112" y="418" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#24474e">这个系列会持续维护：</text>
+  <text x="112" y="456" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">- 按专题归档，不把首页刷碎</text>
+  <text x="112" y="490" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">- 每篇都保留题意、思路、代码、复盘</text>
+  <text x="112" y="524" font-size="22" font-family="'Noto Serif SC','PingFang SC',serif" fill="#355860">- 用 Python Tutor 截图帮助理解过程</text>
+
+  <rect x="690" y="118" width="414" height="390" rx="36" fill="url(#seriesCard)"/>
+  <text x="740" y="182" font-size="25" font-family="'JetBrains Mono','Fira Code',monospace" fill="#ddf7f1">Roadmap</text>
+
+  <rect x="740" y="220" width="138" height="56" rx="18" fill="#fff4d6"/>
+  <rect x="896" y="220" width="158" height="56" rx="18" fill="#fff4d6"/>
+  <rect x="740" y="296" width="158" height="56" rx="18" fill="#fff4d6"/>
+  <rect x="916" y="296" width="138" height="56" rx="18" fill="#fff4d6"/>
+  <rect x="740" y="372" width="146" height="56" rx="18" fill="#fff4d6"/>
+  <rect x="904" y="372" width="150" height="56" rx="18" fill="#fff4d6"/>
+
+  <text x="809" y="256" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">哈希表</text>
+  <text x="975" y="256" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">双指针</text>
+  <text x="819" y="332" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">滑动窗口</text>
+  <text x="985" y="332" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">链表</text>
+  <text x="813" y="408" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">二叉树</text>
+  <text x="979" y="408" text-anchor="middle" font-size="24" font-family="'Noto Serif SC','PingFang SC',serif" fill="#3c3c3c">动态规划</text>
+
+  <text x="740" y="466" font-size="24" font-family="'JetBrains Mono','Fira Code',monospace" fill="#dff6f1">Start with patterns, not pressure.</text>
+</svg>
