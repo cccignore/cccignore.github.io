@@ -1,4 +1,3 @@
-// 每日一言名言数组
 const quotes = [
   "生活不是等待暴风雨过去，而是要学会在雨中跳舞。",
   "成功不是终点，失败不是致命的，继续前进的勇气才是最重要的。",
@@ -27,22 +26,25 @@ const quotes = [
   "The only impossible journey is the one you never begin."
 ];
 
-// 获取随机名言
 function getRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   return quotes[randomIndex];
 }
 
-// 页面加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
-  // 查找公告内容元素
+function renderDailyQuote() {
   const announcementContent = document.querySelector('.announcement_content');
-  
-  if (announcementContent) {
-    // 设置随机名言
-    announcementContent.textContent = getRandomQuote();
-    
-    // 添加一个小图标
-    announcementContent.innerHTML = '<i class="fas fa-quote-left" style="margin-right: 8px; color: #49b1f5;"></i>' + announcementContent.textContent;
-  }
-});
+
+  if (!announcementContent) return;
+
+  announcementContent.innerHTML =
+    '<i class="fas fa-quote-left" style="margin-right: 8px; color: #49b1f5;"></i>' +
+    getRandomQuote();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderDailyQuote);
+} else {
+  renderDailyQuote();
+}
+
+document.addEventListener('pjax:complete', renderDailyQuote);
