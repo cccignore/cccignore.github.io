@@ -1,0 +1,481 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hot100 73 | 矩阵置零：标记法与原地优化 | Welcome to Enoch's Blog!</title><meta name="robots" content="noindex"><meta name="author" content="Enoch"><meta name="copyright" content="Enoch"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="f8f7f4"><meta name="description" content="把 LeetCode Hot100 第 73 题讲给刷题新手，从题意理解、集合标记法到原地优化思路，再到变量含义与代码细节全部拆开说明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hot100 73 | 矩阵置零：标记法与原地优化">
+<meta property="og:url" content="https://cccignore.github.io/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/index.html">
+<meta property="og:site_name" content="Welcome to Enoch&#39;s Blog!">
+<meta property="og:description" content="把 LeetCode Hot100 第 73 题讲给刷题新手，从题意理解、集合标记法到原地优化思路，再到变量含义与代码细节全部拆开说明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cccignore.github.io/img/my-avatar.jpg">
+<meta property="article:published_time" content="2026-03-19T10:40:00.000Z">
+<meta property="article:modified_time" content="2026-03-19T10:40:00.000Z">
+<meta property="article:author" content="Enoch">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="Hot100">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="数组">
+<meta property="article:tag" content="矩阵">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cccignore.github.io/img/my-avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hot100 73 | 矩阵置零：标记法与原地优化",
+  "url": "https://cccignore.github.io/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/",
+  "image": "https://cccignore.github.io/img/my-avatar.jpg",
+  "datePublished": "2026-03-19T10:40:00.000Z",
+  "dateModified": "2026-03-19T10:40:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Enoch",
+      "url": "https://cccignore.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://cccignore.github.io/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#12161c')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'f8f7f4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hot100 73 | 矩阵置零：标记法与原地优化',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/site-upgrades.css"><link rel="stylesheet" href="/css/fill-left.css"><script src="/live2d-widget/dist/autoload.js"></script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Welcome to Enoch's Blog!" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg" style="background-image: url(/img/my-background.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-compass"></i><span> 学习路径</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/python-core/"><i class="fa-fw fas fa-book-open"></i><span> Python核心章节</span></a></li><li><a class="site-page child" href="/leetcode-hot100/"><i class="fa-fw fas fa-code"></i><span> LeetCode Hot100</span></a></li><li><a class="site-page child" href="/build-blog/"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 博客搭建与维护</span></a></li><li><a class="site-page child" href="/navigation/"><i class="fa-fw fas fa-map-signs"></i><span> 资源导航</span></a></li><li><a class="site-page child" href="/random/"><i class="fa-fw fas fa-shuffle"></i><span> 随机逛逛</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-astronaut"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/atom.xml"><i class="fa-fw fas fa-rss"></i><span> 订阅</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/my-background.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src= "/img/loading.gif" data-lazy-src="/img/logo.png" alt="Logo"><span class="site-name">Welcome to Enoch's Blog!</span></a><a class="nav-page-title" href="/"><span class="site-name">Hot100 73 | 矩阵置零：标记法与原地优化</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-compass"></i><span> 学习路径</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/python-core/"><i class="fa-fw fas fa-book-open"></i><span> Python核心章节</span></a></li><li><a class="site-page child" href="/leetcode-hot100/"><i class="fa-fw fas fa-code"></i><span> LeetCode Hot100</span></a></li><li><a class="site-page child" href="/build-blog/"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 博客搭建与维护</span></a></li><li><a class="site-page child" href="/navigation/"><i class="fa-fw fas fa-map-signs"></i><span> 资源导航</span></a></li><li><a class="site-page child" href="/random/"><i class="fa-fw fas fa-shuffle"></i><span> 随机逛逛</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-astronaut"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/atom.xml"><i class="fa-fw fas fa-rss"></i><span> 订阅</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Hot100 73 | 矩阵置零：标记法与原地优化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-19T10:40:00.000Z" title="发表于 2026-03-19 18:40:00">2026-03-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-19T10:40:00.000Z" title="更新于 2026-03-19 18:40:00">2026-03-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/">算法刷题</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/LeetCode-Hot100/">LeetCode Hot100</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/LeetCode-Hot100/%E7%9F%A9%E9%98%B5/">矩阵</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/#post-comment"><span class="waline-comment-count" data-path="/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>系列导航：<a href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）">LeetCode Hot100 刷题导航（系列导航）</a> · 上一篇：<a href="/2026/03/19/leetcode-hot100/leetcode-hot100-560-subarray-sum-equals-k/" title="Hot100 560 | 和为 K 的子数组：前缀和加哈希表">Hot100 560 | 和为 K 的子数组：前缀和加哈希表</a></p>
+</blockquote>
+<p>这题是进入 <code>矩阵</code> 专题的第一题。它会让你第一次真正感受到：二维数组题很多时候不能“看见 0 就立刻改”，而是要先设计一个安全的标记策略。</p>
+<span id="more"></span>
+
+<h2 id="专栏导读"><a href="#专栏导读" class="headerlink" title="专栏导读"></a>专栏导读</h2><p>这题很适合训练一种特别重要的矩阵思维：</p>
+<ul>
+<li>判断和修改最好分开做</li>
+</ul>
+<p>因为在二维数组里，如果你边扫边改，刚改出来的新值很可能会污染后面的判断。</p>
+<p>这篇会重点讲清楚下面几件事：</p>
+<ol>
+<li>题目到底要你改什么</li>
+<li>为什么不能一边遍历一边直接置零</li>
+<li>行集合和列集合各自记录什么</li>
+<li>为什么必须分成两轮处理</li>
+<li>为什么第一行和第一列还能拿来做原地标记</li>
+</ol>
+<h2 id="1-题目到底在说什么"><a href="#1-题目到底在说什么" class="headerlink" title="1. 题目到底在说什么"></a>1. 题目到底在说什么</h2><p>题目给你一个矩阵 <code>matrix</code>。</p>
+<p>规则是：</p>
+<ul>
+<li>只要某个位置原本是 <code>0</code></li>
+<li>那它所在的整行和整列，最后都要变成 <code>0</code></li>
+</ul>
+<p>例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,1,1],</span><br><span class="line"> [1,0,1],</span><br><span class="line"> [1,1,1]]</span><br></pre></td></tr></table></figure>
+
+<p>处理后应该变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,0,1],</span><br><span class="line"> [0,0,0],</span><br><span class="line"> [1,0,1]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-这题最容易误解的地方"><a href="#2-这题最容易误解的地方" class="headerlink" title="2. 这题最容易误解的地方"></a>2. 这题最容易误解的地方</h2><p>很多人第一次写这题，最自然的想法是：</p>
+<ul>
+<li>扫到一个 0</li>
+<li>就立刻把这一整行和这一整列改成 0</li>
+</ul>
+<p>这看起来很顺，但其实非常危险。</p>
+<p>为什么？</p>
+<p>因为你刚改出来的新 0，会被后面的遍历当成“原本就有的 0”，从而继续扩散，导致本来不该清零的地方也被清掉。</p>
+<p>所以这题最关键的不是“怎么改”，而是：</p>
+<ul>
+<li>怎么先记住哪些行和列该改</li>
+</ul>
+<h2 id="3-用一个最小例子说明为什么不能边扫边改"><a href="#3-用一个最小例子说明为什么不能边扫边改" class="headerlink" title="3. 用一个最小例子说明为什么不能边扫边改"></a>3. 用一个最小例子说明为什么不能边扫边改</h2><p>例如矩阵：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,1,1],</span><br><span class="line"> [1,0,1],</span><br><span class="line"> [1,1,1]]</span><br></pre></td></tr></table></figure>
+
+<p>如果你扫描到中间那个 <code>0</code> 时，立刻把整行整列清零，就会先变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,0,1],</span><br><span class="line"> [0,0,0],</span><br><span class="line"> [1,0,1]]</span><br></pre></td></tr></table></figure>
+
+<p>这一步本身没错。</p>
+<p>但如果你后面继续遍历时，又把这些“新改出来的 0”当成原始 0 来处理，就会继续扩散，最后整个矩阵可能都会被清零。</p>
+<p>所以真正稳的思路一定是：</p>
+<ol>
+<li>第一轮只判断，不修改</li>
+<li>第二轮再统一修改</li>
+</ol>
+<h2 id="4-先把题目翻译成人话"><a href="#4-先把题目翻译成人话" class="headerlink" title="4. 先把题目翻译成人话"></a>4. 先把题目翻译成人话</h2><p>如果把这题翻译成最直白的话，其实就是：</p>
+<ul>
+<li>先把所有“需要清零的行号”和“需要清零的列号”记下来</li>
+<li>然后再重新扫一遍矩阵</li>
+<li>只要某个位置处于这些行或列里，就把它改成 0</li>
+</ul>
+<p>这就是这题最自然的第一层解法。</p>
+<h2 id="5-方法一：用两个集合做标记"><a href="#5-方法一：用两个集合做标记" class="headerlink" title="5. 方法一：用两个集合做标记"></a>5. 方法一：用两个集合做标记</h2><h3 id="5-1-为什么先讲这个方法"><a href="#5-1-为什么先讲这个方法" class="headerlink" title="5.1 为什么先讲这个方法"></a>5.1 为什么先讲这个方法</h3><p>虽然这题还能继续优化到原地标记，但对刷题新手来说，最稳的顺序还是：</p>
+<ol>
+<li>先写出最不容易错、最容易理解的版本</li>
+<li>再理解如何优化空间</li>
+</ol>
+<p>所以这里最推荐你先掌握的是：</p>
+<ul>
+<li>一个集合记录要清零的行</li>
+<li>一个集合记录要清零的列</li>
+</ul>
+<h3 id="5-2-Python-Tutor-版代码"><a href="#5-2-Python-Tutor-版代码" class="headerlink" title="5.2 Python Tutor 版代码"></a>5.2 Python Tutor 版代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">set_zeroes</span>(<span class="params">matrix</span>):</span><br><span class="line">    rows = <span class="built_in">set</span>()</span><br><span class="line">    cols = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">            <span class="keyword">if</span> matrix[i][j] == <span class="number">0</span>:</span><br><span class="line">                rows.add(i)</span><br><span class="line">                cols.add(j)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> rows <span class="keyword">or</span> j <span class="keyword">in</span> cols:</span><br><span class="line">                matrix[i][j] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">matrix = [[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</span><br><span class="line">set_zeroes(matrix)</span><br><span class="line"><span class="built_in">print</span>(matrix)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-LeetCode-可提交版代码"><a href="#5-3-LeetCode-可提交版代码" class="headerlink" title="5.3 LeetCode 可提交版代码"></a>5.3 LeetCode 可提交版代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">setZeroes</span>(<span class="params">self, matrix</span>):</span><br><span class="line">        rows = <span class="built_in">set</span>()</span><br><span class="line">        cols = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">                <span class="keyword">if</span> matrix[i][j] == <span class="number">0</span>:</span><br><span class="line">                    rows.add(i)</span><br><span class="line">                    cols.add(j)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">                <span class="keyword">if</span> i <span class="keyword">in</span> rows <span class="keyword">or</span> j <span class="keyword">in</span> cols:</span><br><span class="line">                    matrix[i][j] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-每一行代码在做什么"><a href="#6-每一行代码在做什么" class="headerlink" title="6. 每一行代码在做什么"></a>6. 每一行代码在做什么</h2><p>先看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rows = <span class="built_in">set</span>()</span><br><span class="line">cols = <span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+
+<p>这里两个集合的职责非常明确：</p>
+<ul>
+<li><code>rows</code>：记录哪些行最后要全部变成 0</li>
+<li><code>cols</code>：记录哪些列最后要全部变成 0</li>
+</ul>
+<h3 id="6-1-第一轮遍历：只做记录"><a href="#6-1-第一轮遍历：只做记录" class="headerlink" title="6.1 第一轮遍历：只做记录"></a>6.1 第一轮遍历：只做记录</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">        <span class="keyword">if</span> matrix[i][j] == <span class="number">0</span>:</span><br><span class="line">            rows.add(i)</span><br><span class="line">            cols.add(j)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的核心任务只有一个：</p>
+<ul>
+<li>找出原始矩阵里哪些位置本来就是 0</li>
+</ul>
+<p>注意，这一轮绝对不修改矩阵。</p>
+<p>一旦遇到 0，就说明：</p>
+<ul>
+<li>这一整行以后都要清零</li>
+<li>这一整列以后也都要清零</li>
+</ul>
+<p>于是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rows.add(i)</span><br><span class="line">cols.add(j)</span><br></pre></td></tr></table></figure>
+
+<p>这里为什么用集合？</p>
+<p>因为：</p>
+<ul>
+<li>行号和列号只要记一次就够了</li>
+<li>重复加入集合也不会出问题</li>
+</ul>
+<h3 id="6-2-第二轮遍历：统一修改"><a href="#6-2-第二轮遍历：统一修改" class="headerlink" title="6.2 第二轮遍历：统一修改"></a>6.2 第二轮遍历：统一修改</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> rows <span class="keyword">or</span> j <span class="keyword">in</span> cols:</span><br><span class="line">            matrix[i][j] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>这轮才是真正开始动手改矩阵。</p>
+<p>这里的判断：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> i <span class="keyword">in</span> rows <span class="keyword">or</span> j <span class="keyword">in</span> cols:</span><br></pre></td></tr></table></figure>
+
+<p>意思是：</p>
+<ul>
+<li>只要当前位置所在行需要清零</li>
+<li>或者所在列需要清零</li>
+<li>那当前位置就必须变成 0</li>
+</ul>
+<p>这里的 <code>or</code> 特别关键。</p>
+<p>因为题目要求是：</p>
+<ul>
+<li>行或列命中都要清零</li>
+</ul>
+<p>不是行和列都命中才清零。</p>
+<h2 id="7-用示例手动走一遍"><a href="#7-用示例手动走一遍" class="headerlink" title="7. 用示例手动走一遍"></a>7. 用示例手动走一遍</h2><p>示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,1,1],</span><br><span class="line"> [1,0,1],</span><br><span class="line"> [1,1,1]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="第一轮：只记录行列"><a href="#第一轮：只记录行列" class="headerlink" title="第一轮：只记录行列"></a>第一轮：只记录行列</h3><p>遍历时会发现：</p>
+<ul>
+<li>第 1 行第 1 列有一个 0</li>
+</ul>
+<p>于是：</p>
+<ul>
+<li><code>rows = &#123;1&#125;</code></li>
+<li><code>cols = &#123;1&#125;</code></li>
+</ul>
+<p>这时候矩阵本身还保持原样。</p>
+<h3 id="第二轮：根据记录统一清零"><a href="#第二轮：根据记录统一清零" class="headerlink" title="第二轮：根据记录统一清零"></a>第二轮：根据记录统一清零</h3><p>现在重新扫矩阵。</p>
+<p>只要某个位置满足：</p>
+<ul>
+<li>行号是 1</li>
+<li>或列号是 1</li>
+</ul>
+<p>它就会变成 0。</p>
+<p>所以结果变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1,0,1],</span><br><span class="line"> [0,0,0],</span><br><span class="line"> [1,0,1]]</span><br></pre></td></tr></table></figure>
+
+<p>这就是正确答案。</p>
+<h2 id="8-为什么这方法很稳"><a href="#8-为什么这方法很稳" class="headerlink" title="8. 为什么这方法很稳"></a>8. 为什么这方法很稳</h2><p>因为它把题目拆成了非常清晰的两步：</p>
+<h3 id="第一步：找信息"><a href="#第一步：找信息" class="headerlink" title="第一步：找信息"></a>第一步：找信息</h3><ul>
+<li>哪些行要清零</li>
+<li>哪些列要清零</li>
+</ul>
+<h3 id="第二步：用信息改矩阵"><a href="#第二步：用信息改矩阵" class="headerlink" title="第二步：用信息改矩阵"></a>第二步：用信息改矩阵</h3><p>这样就不会让“新改出来的 0”反过来影响判断。</p>
+<p>所以这版虽然不是空间最优，但对初学者极其友好。</p>
+<h2 id="9-还能怎么优化：用第一行和第一列做标记"><a href="#9-还能怎么优化：用第一行和第一列做标记" class="headerlink" title="9. 还能怎么优化：用第一行和第一列做标记"></a>9. 还能怎么优化：用第一行和第一列做标记</h2><p>如果你准备继续提高，这题还有一个更进阶的思路：</p>
+<ul>
+<li>不额外开两个集合</li>
+<li>直接把第一行和第一列本身当成标记区</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>如果第 <code>i</code> 行需要清零，就把 <code>matrix[i][0]</code> 置为 0</li>
+<li>如果第 <code>j</code> 列需要清零，就把 <code>matrix[0][j]</code> 置为 0</li>
+</ul>
+<p>这样可以把额外空间进一步压到更低。</p>
+<p>不过这版会复杂不少，因为：</p>
+<ul>
+<li>第一行和第一列既要当真实数据</li>
+<li>又要当标记区</li>
+<li>所以通常还要额外记录“第一行本来要不要清零”“第一列本来要不要清零”</li>
+</ul>
+<p>如果你现在还在矩阵题入门阶段，我更建议你先把集合标记法彻底掌握，因为它最不容易写错。</p>
+<h2 id="10-这题顺手学到的-Python-语法"><a href="#10-这题顺手学到的-Python-语法" class="headerlink" title="10. 这题顺手学到的 Python 语法"></a>10. 这题顺手学到的 Python 语法</h2><h3 id="10-1-set"><a href="#10-1-set" class="headerlink" title="10.1 set()"></a>10.1 <code>set()</code></h3><p>用来记录唯一的行号和列号。</p>
+<h3 id="10-2-二维数组遍历"><a href="#10-2-二维数组遍历" class="headerlink" title="10.2 二维数组遍历"></a>10.2 二维数组遍历</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(matrix[<span class="number">0</span>])):</span><br></pre></td></tr></table></figure>
+
+<p>这是矩阵题里最基础的双层循环写法。</p>
+<h3 id="10-3-in"><a href="#10-3-in" class="headerlink" title="10.3 in"></a>10.3 <code>in</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> i <span class="keyword">in</span> rows <span class="keyword">or</span> j <span class="keyword">in</span> cols:</span><br></pre></td></tr></table></figure>
+
+<p>表示判断当前行号或列号是否在标记集合里。</p>
+<h2 id="11-这题最容易犯的错"><a href="#11-这题最容易犯的错" class="headerlink" title="11. 这题最容易犯的错"></a>11. 这题最容易犯的错</h2><h3 id="11-1-一边遍历一边直接改矩阵"><a href="#11-1-一边遍历一边直接改矩阵" class="headerlink" title="11.1 一边遍历一边直接改矩阵"></a>11.1 一边遍历一边直接改矩阵</h3><p>这会让后面的判断被“新产生的 0”污染。</p>
+<h3 id="11-2-只记录行，不记录列"><a href="#11-2-只记录行，不记录列" class="headerlink" title="11.2 只记录行，不记录列"></a>11.2 只记录行，不记录列</h3><p>或者反过来只记录列，不记录行，都不完整。</p>
+<h3 id="11-3-没理解为什么必须分两轮"><a href="#11-3-没理解为什么必须分两轮" class="headerlink" title="11.3 没理解为什么必须分两轮"></a>11.3 没理解为什么必须分两轮</h3><p>这题最关键的就是：</p>
+<ul>
+<li>第一轮只判断</li>
+<li>第二轮再修改</li>
+</ul>
+<h3 id="11-4-or-写成-and"><a href="#11-4-or-写成-and" class="headerlink" title="11.4 or 写成 and"></a>11.4 <code>or</code> 写成 <code>and</code></h3><p>只要行或列命中就要清零，所以必须是 <code>or</code>。</p>
+<h2 id="12-一句话复盘"><a href="#12-一句话复盘" class="headerlink" title="12. 一句话复盘"></a>12. 一句话复盘</h2><p>这题的本质不是“看到 0 就立刻扩散清零”，而是先把该清零的行列标记下来，再统一修改矩阵。</p>
+<h2 id="13-下一步怎么学"><a href="#13-下一步怎么学" class="headerlink" title="13. 下一步怎么学"></a>13. 下一步怎么学</h2><p>如果你继续往后刷矩阵专题，后面就可以开始练更有空间感和方向感的矩阵题，比如螺旋矩阵、旋转图像之类。</p>
+<!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cccignore.github.io">Enoch</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cccignore.github.io/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/">https://cccignore.github.io/2026/03/19/leetcode-hot100/leetcode-hot100-73-set-matrix-zeroes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cccignore.github.io" target="_blank">Welcome to Enoch's Blog!</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/Hot100/">Hot100</a><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E7%BB%84/">数组</a><a class="post-meta__tags" href="/tags/%E7%9F%A9%E9%98%B5/">矩阵</a></div><div class="post-share"><div class="social-share" data-image="/img/my-avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/covers/leetcode-hot100-series-cover.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-19</div><div class="info-item-2">LeetCode Hot100 刷题导航（系列导航）</div></div><div class="info-2"><div class="info-item-1">这套 LeetCode Hot100 系列会按“适合长期复习”的方式来整理：首页只放这一篇导航文章，单题题解不刷首页，统一在系列内部维护。   这个系列怎么读如果你现在和我一样：  刚开始系统刷题 Python 不是完全不会，但已经有些生疏 想一边刷 Hot100，一边把语法和题型感觉捡回来  那这套系列会更偏向“从入门到能复习”的写法，而不是只放一个...</div></div></div></a><a class="pagination-related" href="/2026/03/17/python-core/python-core-index/" title="Python教程核心章节整理（系列导航）"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/covers/python-core-cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-17</div><div class="info-item-2">Python教程核心章节整理（系列导航）</div></div><div class="info-2"><div class="info-item-1">这套系列将原来的超长文章拆分为 5 篇，按章节顺序阅读更清晰。   阅读顺序 Python基础 函数 模块 错误、调试和测试 常用内建模块  说明 来源：https://liaoxuefeng.com/books/python/ 与本地 PDF Python教程-廖雪峰-2025-06-16.pdf 提取范围：Python基础、函数、模块、错误&#x2...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="/img/my-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Enoch</div><div class="author-info-description">记录流动的思绪，留住片刻的光</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cccignore"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://www.instagram.com/cyn07111/" target="_blank" title="Instagram"><i class="fab fa-instagram" style="color: #E4405F;"></i></a><a class="social-icon" href="https://space.bilibili.com/284576123" target="_blank" title="哔哩哔哩"><i class="fab fa-bilibili" style="color: #FF8EB3;"></i></a><a class="social-icon" href="https://music.163.com/#/user/home?id=4930687131" target="_blank" title="网易云音乐"><i class="fas fa-music" style="color: #dd001b;"></i></a><a class="social-icon" href="https://weibo.com/u/5789743402" target="_blank" title="微博"><i class="fab fa-weibo" style="color: #E6162D;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>每日一言</span></div><div class="announcement_content">每日一言加载中...</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%93%E6%A0%8F%E5%AF%BC%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">专栏导读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A2%98%E7%9B%AE%E5%88%B0%E5%BA%95%E5%9C%A8%E8%AF%B4%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">1. 题目到底在说什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%99%E9%A2%98%E6%9C%80%E5%AE%B9%E6%98%93%E8%AF%AF%E8%A7%A3%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">3.</span> <span class="toc-text">2. 这题最容易误解的地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E4%B8%80%E4%B8%AA%E6%9C%80%E5%B0%8F%E4%BE%8B%E5%AD%90%E8%AF%B4%E6%98%8E%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%BE%B9%E6%89%AB%E8%BE%B9%E6%94%B9"><span class="toc-number">4.</span> <span class="toc-text">3. 用一个最小例子说明为什么不能边扫边改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%88%E6%8A%8A%E9%A2%98%E7%9B%AE%E7%BF%BB%E8%AF%91%E6%88%90%E4%BA%BA%E8%AF%9D"><span class="toc-number">5.</span> <span class="toc-text">4. 先把题目翻译成人话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E7%94%A8%E4%B8%A4%E4%B8%AA%E9%9B%86%E5%90%88%E5%81%9A%E6%A0%87%E8%AE%B0"><span class="toc-number">6.</span> <span class="toc-text">5. 方法一：用两个集合做标记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%88%E8%AE%B2%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 为什么先讲这个方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Python-Tutor-%E7%89%88%E4%BB%A3%E7%A0%81"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 Python Tutor 版代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-LeetCode-%E5%8F%AF%E6%8F%90%E4%BA%A4%E7%89%88%E4%BB%A3%E7%A0%81"><span class="toc-number">6.3.</span> <span class="toc-text">5.3 LeetCode 可提交版代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%AF%8F%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%9C%A8%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">7.</span> <span class="toc-text">6. 每一行代码在做什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E7%AC%AC%E4%B8%80%E8%BD%AE%E9%81%8D%E5%8E%86%EF%BC%9A%E5%8F%AA%E5%81%9A%E8%AE%B0%E5%BD%95"><span class="toc-number">7.1.</span> <span class="toc-text">6.1 第一轮遍历：只做记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E7%AC%AC%E4%BA%8C%E8%BD%AE%E9%81%8D%E5%8E%86%EF%BC%9A%E7%BB%9F%E4%B8%80%E4%BF%AE%E6%94%B9"><span class="toc-number">7.2.</span> <span class="toc-text">6.2 第二轮遍历：统一修改</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%94%A8%E7%A4%BA%E4%BE%8B%E6%89%8B%E5%8A%A8%E8%B5%B0%E4%B8%80%E9%81%8D"><span class="toc-number">8.</span> <span class="toc-text">7. 用示例手动走一遍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE%EF%BC%9A%E5%8F%AA%E8%AE%B0%E5%BD%95%E8%A1%8C%E5%88%97"><span class="toc-number">8.1.</span> <span class="toc-text">第一轮：只记录行列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE%EF%BC%9A%E6%A0%B9%E6%8D%AE%E8%AE%B0%E5%BD%95%E7%BB%9F%E4%B8%80%E6%B8%85%E9%9B%B6"><span class="toc-number">8.2.</span> <span class="toc-text">第二轮：根据记录统一清零</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%96%B9%E6%B3%95%E5%BE%88%E7%A8%B3"><span class="toc-number">9.</span> <span class="toc-text">8. 为什么这方法很稳</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E6%89%BE%E4%BF%A1%E6%81%AF"><span class="toc-number">9.1.</span> <span class="toc-text">第一步：找信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%94%A8%E4%BF%A1%E6%81%AF%E6%94%B9%E7%9F%A9%E9%98%B5"><span class="toc-number">9.2.</span> <span class="toc-text">第二步：用信息改矩阵</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%BF%98%E8%83%BD%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96%EF%BC%9A%E7%94%A8%E7%AC%AC%E4%B8%80%E8%A1%8C%E5%92%8C%E7%AC%AC%E4%B8%80%E5%88%97%E5%81%9A%E6%A0%87%E8%AE%B0"><span class="toc-number">10.</span> <span class="toc-text">9. 还能怎么优化：用第一行和第一列做标记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E8%BF%99%E9%A2%98%E9%A1%BA%E6%89%8B%E5%AD%A6%E5%88%B0%E7%9A%84-Python-%E8%AF%AD%E6%B3%95"><span class="toc-number">11.</span> <span class="toc-text">10. 这题顺手学到的 Python 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-1-set"><span class="toc-number">11.1.</span> <span class="toc-text">10.1 set()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-2-%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E9%81%8D%E5%8E%86"><span class="toc-number">11.2.</span> <span class="toc-text">10.2 二维数组遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-3-in"><span class="toc-number">11.3.</span> <span class="toc-text">10.3 in</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%BF%99%E9%A2%98%E6%9C%80%E5%AE%B9%E6%98%93%E7%8A%AF%E7%9A%84%E9%94%99"><span class="toc-number">12.</span> <span class="toc-text">11. 这题最容易犯的错</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-1-%E4%B8%80%E8%BE%B9%E9%81%8D%E5%8E%86%E4%B8%80%E8%BE%B9%E7%9B%B4%E6%8E%A5%E6%94%B9%E7%9F%A9%E9%98%B5"><span class="toc-number">12.1.</span> <span class="toc-text">11.1 一边遍历一边直接改矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-2-%E5%8F%AA%E8%AE%B0%E5%BD%95%E8%A1%8C%EF%BC%8C%E4%B8%8D%E8%AE%B0%E5%BD%95%E5%88%97"><span class="toc-number">12.2.</span> <span class="toc-text">11.2 只记录行，不记录列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-3-%E6%B2%A1%E7%90%86%E8%A7%A3%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E5%88%86%E4%B8%A4%E8%BD%AE"><span class="toc-number">12.3.</span> <span class="toc-text">11.3 没理解为什么必须分两轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-4-or-%E5%86%99%E6%88%90-and"><span class="toc-number">12.4.</span> <span class="toc-text">11.4 or 写成 and</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%A4%8D%E7%9B%98"><span class="toc-number">13.</span> <span class="toc-text">12. 一句话复盘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E4%B8%8B%E4%B8%80%E6%AD%A5%E6%80%8E%E4%B9%88%E5%AD%A6"><span class="toc-number">14.</span> <span class="toc-text">13. 下一步怎么学</span></a></li></ol></div></div><div class="card-widget card-post-series"><div class="item-headline"><i class="fa-solid fa-layer-group"></i><span>系列文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）"><img src= "/img/loading.gif" data-lazy-src="/img/covers/leetcode-hot100-series-cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LeetCode Hot100 刷题导航（系列导航）"></a><div class="content"><a class="title" href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）">LeetCode Hot100 刷题导航（系列导航）</a><time datetime="2026-03-18T16:20:00.000Z" title="发表于 2026-03-19 00:20:00">2026-03-19</time></div></div></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）"><img src= "/img/loading.gif" data-lazy-src="/img/covers/leetcode-hot100-series-cover.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LeetCode Hot100 刷题导航（系列导航）"/></a><div class="content"><a class="title" href="/2026/03/19/leetcode-hot100/leetcode-hot100-index/" title="LeetCode Hot100 刷题导航（系列导航）">LeetCode Hot100 刷题导航（系列导航）</a><time datetime="2026-03-18T16:20:00.000Z" title="发表于 2026-03-19 00:20:00">2026-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/17/python-core/python-core-index/" title="Python教程核心章节整理（系列导航）"><img src= "/img/loading.gif" data-lazy-src="/img/covers/python-core-cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python教程核心章节整理（系列导航）"/></a><div class="content"><a class="title" href="/2026/03/17/python-core/python-core-index/" title="Python教程核心章节整理（系列导航）">Python教程核心章节整理（系列导航）</a><time datetime="2026-03-17T07:59:00.000Z" title="发表于 2026-03-17 15:59:00">2026-03-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/18/%E6%89%8B%E7%AE%97ID3%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E4%B8%A4%E9%81%93%E9%A2%98/" title="用 ID3（信息增益）手算两道题：缺失值 + 连续特征">用 ID3（信息增益）手算两道题：缺失值 + 连续特征</a><time datetime="2025-10-18T10:00:00.000Z" title="发表于 2025-10-18 18:00:00">2025-10-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/" title="中文说唱分享（PART I）"><img src= "/img/loading.gif" data-lazy-src="https://img0.baidu.com/it/u=975547438,3312695868&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=889&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="中文说唱分享（PART I）"/></a><div class="content"><a class="title" href="/2025/09/27/%E6%9C%80%E8%BF%91%E5%9C%A8%E5%90%AC%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%B4%E5%94%B1%E5%88%86%E4%BA%AB/" title="中文说唱分享（PART I）">中文说唱分享（PART I）</a><time datetime="2025-09-27T11:31:35.000Z" title="发表于 2025-09-27 19:31:35">2025-09-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/21/%E8%BF%9C%E7%A8%8B%20SSH%20%E4%BD%BF%E7%94%A8%20Codex%EF%BC%9A%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0%20Clash%20%E4%BB%A3%E7%90%86%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="远程 SSH 使用 Codex：转发本地 Clash 代理到服务器">远程 SSH 使用 Codex：转发本地 Clash 代理到服务器</a><time datetime="2025-06-21T04:00:00.000Z" title="发表于 2025-06-21 12:00:00">2025-06-21</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2025 - 2026 By Enoch</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.0-b2</a></span></div><div class="footer_custom_text"><div class="footer-neo">
+  <div class="footer-quote">I wish you to become your own sun, no need to rely on who's light.</div>
+  <div class="footer-runtime" id="footer-runtime">本站居然运行了...</div>
+  <div class="footer-voyager" id="footer-voyager">旅行者1号当前距离地球...</div>
+  <div class="footer-badges">
+    <span class="badge-item"><i class="fas fa-cube"></i> Frame Hexo</span>
+    <span class="badge-item"><i class="fas fa-butterfly"></i> Theme Butterfly</span>
+    <span class="badge-item"><i class="fab fa-github"></i> Source GitHub</span>
+    <span class="badge-item"><i class="fas fa-rocket"></i> Host GitHub Pages</span>
+    <span class="badge-item"><i class="far fa-copyright"></i> License BY-NC-SA 4.0</span>
+  </div>
+</div>
+</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  let initFn = window.walineFn || null
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"lang":"zh-CN","meta":["nick","mail","link"],"requiredMeta":["nick","mail"],"pageSize":10,"login":"enable","wordLimit":500,"search":false,"reaction":false}
+
+  const destroyWaline = ele => ele.destroy()
+
+  const initWaline = (Fn, el = document, path = window.location.pathname) => {
+    const waline = Fn({
+      el: el.querySelector('#waline-wrap'),
+      serverURL: 'https://enoch-waline.vercel.app',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      comment: true,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyWaline = () => {
+        destroyWaline(waline)
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const loadWaline = (el, path) => {
+    if (initFn) initWaline(initFn, el, path)
+    else {
+      btf.getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css')
+        .then(() => import('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js'))
+        .then(({ init }) => {
+          initFn = init || Waline.init
+          initWaline(initFn, el, path)
+          window.walineFn = initFn
+        })
+    }
+  }
+
+  if (isShuoshuo) {
+    'Waline' === 'Waline'
+      ? window.shuoshuoComment = { loadComment: loadWaline } 
+      : window.loadOtherComment = loadWaline
+    return
+  }
+
+  if ('Waline' === 'Waline' || !false) {
+    if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+    else setTimeout(loadWaline, 0)
+  } else {
+    window.loadOtherComment = loadWaline
+  }
+})()</script></div><script src="/js/sakuraPlus.js"></script><script src="/js/daily-quote.js"></script><script src="/js/footer-enhance.js"></script><script src="/js/ui-enhance.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索系列、题解或关键词" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

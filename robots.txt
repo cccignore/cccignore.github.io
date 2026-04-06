@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cccignore.github.io/sitemap.xml
+Sitemap: https://cccignore.github.io/baidusitemap.xml
