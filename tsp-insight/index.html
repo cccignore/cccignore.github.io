@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102c3f" />
+    <meta name="description" content="TSP Insight｜TikTok Shop 数据决策系统" />
+    <meta property="og:title" content="TSP Insight｜TikTok Shop 数据决策系统" />
+    <meta property="og:description" content="从 HubStudio 导出数据到可执行的创作者、视频与商品机会。" />
+    <meta property="og:image" content="https://tsp-insight-analytics.cynn271.chatgpt.site/og.png" />
+    <title>TSP Insight｜TikTok Shop 数据决策系统</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: #edf2f2;
+      }
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+      iframe { width: 100%; height: 100%; border: 0; background: #edf2f2; }
+      .loading {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        background: #edf2f2;
+        color: #173750;
+        transition: opacity .25s ease;
+      }
+      .loading[hidden] { opacity: 0; pointer-events: none; }
+      .loading div { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; }
+      .mark { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(145deg, #17a08e, #087f72); box-shadow: 0 8px 18px #087f7230; }
+      .fallback {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        z-index: 3;
+        padding: 8px 11px;
+        border-radius: 8px;
+        background: #102c3f;
+        color: #fff;
+        text-decoration: none;
+        font-size: 11px;
+        opacity: .74;
+      }
+      .fallback:hover { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <div class="loading" id="loading"><div><span class="mark"></span>正在进入 TSP Insight…</div></div>
+    <iframe
+      title="TSP Insight 数据决策系统"
+      src="https://tsp-insight-analytics.cynn271.chatgpt.site/"
+      allow="clipboard-read; clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+    <a class="fallback" href="https://tsp-insight-analytics.cynn271.chatgpt.site/" target="_blank" rel="noreferrer">在新窗口打开</a>
+    <script>
+      const frame = document.querySelector("iframe");
+      const loading = document.getElementById("loading");
+      frame.addEventListener("load", () => {
+        loading.hidden = true;
+        window.setTimeout(() => loading.remove(), 300);
+      });
+    </script>
+  </body>
+</html>
